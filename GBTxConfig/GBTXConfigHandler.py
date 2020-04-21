@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # mapping for phase decimal to word
 #  000000: disabled
@@ -30,6 +30,14 @@ phase_mode = {
     "tracking":"2a",
     "none":"3f",
 }
+
+
+def timeout_run(*arg):
+    try:
+        # fine tuning
+        subprocess.run(*arg, timeout=10)
+    except TimeoutExpired:
+        print("WARNING! Timeout the process! Shouldn't affect uploaded values")
 
 class GBTXConfigHandler():
     def __init__(self, tp, val, _flx_card, _fiberNo, _ICaddr, hostname=""):
@@ -204,16 +212,26 @@ class GBTXConfigHandler():
         except IOError:
             exit("You should run it under a directory where you have write permissing!")
 
-        subprocess.call( ["fice", "-G", str(self.fiberNo), "-I", str(self.ICaddr), "-d", str(self.flx_card)], stdout=f )
+        timeout_run( ["fice", 
+            "-G", str(self.fiberNo), 
+            "-I", str(self.ICaddr), 
+            "-d", str(self.flx_card)], stdout=f)
 
         f.close()
 
     # totally just like a helper
     def upload_single(self, reg, val):
-        os.system("fice -G {0} -I {1} -d {2} -a {3} {4}".format(
-            self.fiberNo, self.ICaddr, self.flx_card,
-            reg, val,
-            ))
+        timeout_run( ["fice", 
+            "-G", str(self.fiberNo), 
+            "-I", str(self.ICaddr), 
+            "-d", str(self.flx_card),
+            "-a", str(reg), str(val)
+            ])
+
+        #  os.system("fice -G {0} -I {1} -d {2} -a {3} {4}".format(
+            #  self.fiberNo, self.ICaddr, self.flx_card,
+            #  reg, val,
+            #  ))
         pass
 
     def upload_config(self):
@@ -229,7 +247,13 @@ class GBTXConfigHandler():
 
         # upload!
         if self.ICaddr == 1:
-            os.system("fice -G {0} -I {1} -d {2} {3}".format(self.fiberNo, self.ICaddr, self.flx_card, self.write_file_name))
+            #  os.system("fice -G {0} -I {1} -d {2} {3}".format(self.fiberNo, self.ICaddr, self.flx_card, self.write_file_name))
+            timeout_run( ["fice", 
+                "-G", str(self.fiberNo), 
+                "-I", str(self.ICaddr), 
+                "-d", str(self.flx_card),
+                str(self.write_file_name)
+                ])
         time.sleep(1)
         # the first time, upload for GBTx-2 is always not working..
         # give it another try another time
@@ -237,11 +261,22 @@ class GBTXConfigHandler():
             # old way with IC
             # os.system("fice -G {0} -I {1} -d {2} {3}".format(self.fiberNo, self.ICaddr, self.flx_card, self.write_file_name))
 
-            # need to use EC
-            os.system("/afs/cern.ch/user/p/ptzanis/public/ScaSoftware/build/Demonstrators/GbtxConfiguration/gbtx_configuration --address simple-netio://direct/{0} -i 1 -d {1} -w {2}".format(
-                self.hostname,
-                self.flx_card, 
-                self.write_file_name))
+            # need to use I2c
+            # at least need to config it (through this 
+            #   or by connecting fiber, which is not feasible in run-3 because lack of felix)
+            timeout_run(["/afs/cern.ch/user/p/ptzanis/public/ScaSoftware/build/Demonstrators/GbtxConfiguration/gbtx_configuration",
+                "--address",
+                "simple-netio://direct/{0}".format(self.hostname),
+                "-i", "1",
+                "-d", str(self.flx_card),
+                "-w", str(self.write_file_name)
+                ])
+
+            #  os.system("/afs/cern.ch/user/p/ptzanis/public/ScaSoftware/build/Demonstrators/GbtxConfiguration/gbtx_configuration --address simple-netio://direct/{0} -i 1 -d {1} -w {2}".format(
+                #  self.hostname,
+                #  self.flx_card, 
+                #  self.write_file_name))
+
             time.sleep(1)
             pass
         pass
@@ -398,7 +433,7 @@ class GBTXConfigHandler():
             print("====> INSPECT after train off")
             is_locked = self.inspect_lock()
             if is_locked:
-                print "everything is locked"
+                print("everything is locked")
             return is_locked
         else:
             return True
@@ -406,7 +441,7 @@ class GBTXConfigHandler():
 
     def inspect_lock(self):
         locked = True
-        print ("inspecting flx-card {0}, fiber {1},  ICaddr {2}".format(self.flx_card, self.fiberNo, self.ICaddr) )
+        print("inspecting flx-card {0}, fiber {1},  ICaddr {2}".format(self.flx_card, self.fiberNo, self.ICaddr) )
         for reg, mask in [
 
                 # to check group 0-4
@@ -447,7 +482,7 @@ class GBTXConfigHandler():
 
             if (val & mask) != mask:
                 series = "{0:#07b}".format(mask - (val & mask))[:1:-1]
-                print val,series
+                print(val, series)
                 for i in range(len(series)):
                     if series[i] == "0":
                         continue

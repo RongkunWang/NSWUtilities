@@ -1,11 +1,14 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 don't forget to source FELIX environment before running!
 in um-felix?.cern.ch
     source /opt/felix/setup.sh   for latest rpm build
     source /home/setup/setup.sh  for very old local build
 
-version 2.3 Mar. 4 2020
+version 2.4 Apr. 21 2020
+    python3 with timeout
+
+version 2.3 Mar. 4  2020
    gbtx2 group0 need to set reg63 as 00
 
 version 2.2 Jan. XX 2020
