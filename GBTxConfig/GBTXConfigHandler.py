@@ -32,10 +32,10 @@ phase_mode = {
 }
 
 
-def timeout_run(*arg):
+def timeout_run(*arg, **kwargs):
     try:
         # fine tuning
-        subprocess.run(*arg, timeout=10)
+        subprocess.run(*arg, **kwargs, timeout = 10)
     except TimeoutExpired:
         print("WARNING! Timeout the process! Shouldn't affect uploaded values")
 
@@ -467,10 +467,10 @@ class GBTXConfigHandler():
 
             found = False
             for line in iter(p.stdout.readline, b''):
-                if "Reply" in line:
+                if b"Reply" in line:
                     found = True
                 elif found:
-                    out = line.rstrip().split(":")[1]
+                    out = line.rstrip().split(b":")[1]
                     break
 
             #  print out
