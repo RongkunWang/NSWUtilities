@@ -31,13 +31,14 @@ phase_mode = {
     "none":"3f",
 }
 
-
 def timeout_run(*arg, **kwargs):
     try:
         # fine tuning
-        subprocess.run(*arg, **kwargs, timeout = 10)
-    except TimeoutExpired:
+        subprocess.run(*arg, **kwargs, timeout = 3)
+    except subprocess.TimeoutExpired:
         print("WARNING! Timeout the process! Shouldn't affect uploaded values")
+    except e:
+        print("unexpected exception", sys.exc_info()[0])
 
 class GBTXConfigHandler():
     def __init__(self, tp, val, _flx_card, _fiberNo, _ICaddr, hostname=""):
@@ -53,6 +54,15 @@ class GBTXConfigHandler():
         self.not_inspect = False
         self.hostname = hostname
         self.do_one_by_one = False
+
+
+        if _ICaddr == 2:
+            # watchdog timer
+            # 00 means turn off
+            # if set to 07, turned on, and there is no fiber connected, 
+            #  it will constantly reset the gbtx, which is what we don't want.
+            self.reg[50] = 00
+      
 
         os.system("mkdir -p GBTXconfigs")
 
@@ -203,7 +213,7 @@ class GBTXConfigHandler():
             return None
         pass
 
-    def read_config(self):
+    def read_config(self, val=0):
         """
         read the current config to a file
         """
@@ -212,10 +222,31 @@ class GBTXConfigHandler():
         except IOError:
             exit("You should run it under a directory where you have write permissing!")
 
-        timeout_run( ["fice", 
-            "-G", str(self.fiberNo), 
-            "-I", str(self.ICaddr), 
-            "-d", str(self.flx_card)], stdout=f)
+        if self.ICaddr == 1:
+            if val == 0:
+                timeout_run( ["fice", 
+                    "-G", str(self.fiberNo), 
+                    "-I", str(self.ICaddr), 
+                    "-d", str(self.flx_card)], stdout=f)
+            else:
+                timeout_run( ["fice", 
+                    "-G", str(self.fiberNo), 
+                    "-I", str(self.ICaddr), 
+                    "-d", str(self.flx_card)])
+        if self.ICaddr == 2:
+            # old way with IC
+            # os.system("fice -G {0} -I {1} -d {2} {3}".format(self.fiberNo, self.ICaddr, self.flx_card, self.write_file_name))
+
+            # need to use I2c
+            # at least need to config it (through this 
+            #   or by connecting fiber, which is not feasible in run-3 because lack of felix)
+            timeout_run(["/afs/cern.ch/user/p/ptzanis/public/ScaSoftware/build/Demonstrators/GbtxConfiguration/gbtx_configuration",
+                "--address",
+                "simple-netio://direct/{0}".format(self.hostname),
+                "-i", "1",
+                "-d", str(self.flx_card),
+                "-r"
+                ])
 
         f.close()
 
