@@ -5,6 +5,10 @@ in um-felix?.cern.ch
     source /opt/felix/setup.sh   for latest rpm build
     source /home/setup/setup.sh  for very old local build
 
+version 2.6 Jul. 2 2020
+    add readback for gbtx2
+version 2.5 Jul. 2 2020
+     timeout bug fix
 version 2.4 Apr. 21 2020
     python3 with timeout
 
@@ -36,8 +40,12 @@ from other_words import *
 from GBTXConfigHandler import  *
 
 parser = argparse.ArgumentParser(description='Config gbtx.')
+parser.add_argument("-i", "--init", action = "store_true",
+        help = "This will have to be run first to configure gbtx correct!",)
 parser.add_argument("-t", "--train", action = "store_true",
-        help = "This will have to be run first, to train the phases. then we can do static phase setting, in the same directory!",)
+        help = "This will have to be run after FE are configured, to train the phases. then we can do static phase setting, in the same directory!",)
+parser.add_argument("-r", "--readback", action = "store_true",
+        help = "This will read the registers!",)
 parser.add_argument("-n", "--not_inspect", action = "store_true",
         help = "This will cause the script not to inspect DLL(brute)!",)
 args = parser.parse_args()
@@ -48,7 +56,10 @@ args = parser.parse_args()
 
 # 1st number is fiber number / GBT link number
 # 2nd number is which GBTx the fiber is connected to (1/2) on L1DDC (need to change I2C address)
-# 3rd number is flx-card (0/1 potentiall 2/3) for flx-card device to use
+# 3rd number is for GBTx1 is flx-card (0/1 potentiall 2/3) for flx-card device to use
+#               for GBTx2 is I2c slave
+# 4rd address is used for GBTx2 as the elink address
+
 l_gbtxn = [
         (0, 1, 0),
         (1, 1, 0),
@@ -136,7 +147,12 @@ for arg_tuple in l_gbtxn:
 
     #  con.overwrite_dll()
 
-    if args.train:
+    if  args.init:
+        print("===> upload all config")
+        con.upload_config()
+    elif args.readback:
+        con.read_config(1)
+    elif args.train:
         # first upload the very first config with IC
         print("===> upload all config")
         con.upload_config()
@@ -145,6 +161,7 @@ for arg_tuple in l_gbtxn:
         if not con.train_phases():
         #  if not con.inspect_lock():
             l_not_locked.append(con.read_file_name)
+
 
         # read back config in a file for phases
         if ICaddr == 1:
