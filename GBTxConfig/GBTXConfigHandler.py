@@ -61,7 +61,7 @@ class GBTXConfigHandler():
             # 00 means turn off
             # if set to 07, turned on, and there is no fiber connected, 
             #  it will constantly reset the gbtx, which is what we don't want.
-            self.reg[50] = 00
+            self.reg[50] = "00"
       
 
         os.system("mkdir -p GBTXconfigs")
