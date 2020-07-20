@@ -3,10 +3,11 @@
 import ROOT as R
 import sys, os
 R.gROOT.SetBatch(True) 
+R.ROOT.EnableImplicitMT(0)
 
 # for today's test
-basedir = "/eos/atlas/atlascerngroupdisk/det-nsw-stgc/b191/A12/"
-rundir = "20200212_DAQ/"
+#  basedir = "/eos/atlas/atlascerngroupdisk/det-nsw-stgc/b191/A12/"
+#  rundir = "20200219_Cosmics/"
 
 l_board_A12 = {
 	"sL1Q1":"linkId == 44032 || linkId == 44033",
@@ -28,8 +29,6 @@ l_board_A12 = {
 	"sL3Q3":"linkId == 44304",
 	"pL3Q1":"linkId == 11520",
 	"pL3Q2":"linkId == 11528",
-	# typo!!
-	#"pL3Q3":"linkId == 2320",
 	"pL3Q3":"linkId == 11536",
 
 	"sL4Q1":"linkId == 44416 || linkId == 44417",
@@ -70,51 +69,98 @@ l_board_A12 = {
 	"pL8Q1":"linkId == 12160",
 	"pL8Q2":"linkId == 12168",
 	"pL8Q3":"linkId == 12176",
-
 }
 
+l_board_A14 = {}
 
 
 
-l_board = l_board_A12
 
+# processing
+for board, links in l_board_A12.items():
+    # if "pL1" not in board: continue
+    for l_b, offset in [
+            (l_board_A14, 2048)
+            ]:
+        newlinks = []
+        for link in links.split("||"):
+            num = int(link.split("==")[1])
+            newlinks.append( link.split("==")[0] + " == " + str(num + offset) )
+        l_b[board] = " || ".join(newlinks)
+
+
+
+l_board = l_board_A14
+
+
+
+
+
+
+print l_board_A12
+print l_board
+
+#  exit()
 
 fn = sys.argv[1]
+rundir = sys.argv[2]
+#  rundir = ""
 # f = R.TFile(fn)
 # t = f.Get("nsw")
 
 do = R.RDataFrame("nsw", fn)
 
-full_dir = basedir + rundir + fn + "/"
+vmmmap_code ='''
+using namespace ROOT::VecOps;
+RVec<int> vmmmap (const RVec<int> &vmm)
+{
+   auto vmmNew = [](const int &vmmid) { 
+     if (vmmid == 0) return 2; 
+     else if (vmmid == 1) return 3;
+     else if (vmmid == 2) return 0;
+     else if (vmmid == 3) return 1;
+     else if (vmmid == 4) return 5;
+     else if (vmmid == 5) return 4;
+     else return vmmid;
+   };
+   return Map(vmm, vmmNew);
+};
+'''
+R.gInterpreter.Declare(vmmmap_code)
+
+
+do = do.Define("vmmidNew", 'vmmmap( vmmid )')
+
+full_dir = rundir + "/" + fn[:-5] + "/"
 os.system("mkdir -p " + full_dir)
 
 l_histo = []
 l_name = []
 
 for b, linkCut in l_board.items():
-	d = do.Define("channelIDB", "(vmmid * 64 + channel)[{0}]".format(linkCut))
-	h = d.Histo1D( ("x", "", 512, -0.5, 511.5), "channelIDB")
-	l_histo.append((b, h))
-	l_name.append("hit")
+    #  d = do.Define("channelIDB", "(vmmid * 64 + channel)[{0}]".format(linkCut))
+    d = do.Define("channelIDB", "(vmmidNew * 64 + channel)[{0}]".format(linkCut))
+    h = d.Histo1D( ("x", "", 512, -0.5, 511.5), "channelIDB")
+    l_histo.append((b, h))
+    l_name.append("hit")
 
 for b, linkCut in l_board.items():
-	d = do.Define("channelIDB", "(vmmid * 64 + channel)[{0}]".format(linkCut))
-	h = d.Define( "ChRelbcid", "relbcid[{0}]".format(linkCut) ).Histo2D( 
-		("x", "", 512, -0.5, 511.5, 8, -0.5, 7.5), "channelIDB", "ChRelbcid")
-	l_histo.append((b, h))
-	l_name.append("relbcid_vs_hit")
+    d = do.Define("channelIDB", "(vmmidNew * 64 + channel)[{0}]".format(linkCut))
+    h = d.Define( "ChRelbcid", "relbcid[{0}]".format(linkCut) ).Histo2D( 
+        ("x", "", 512, -0.5, 511.5, 8, -0.5, 7.5), "channelIDB", "ChRelbcid")
+    l_histo.append((b, h))
+    l_name.append("relbcid_vs_hit")
 
 for b, linkCut in l_board.items():
-	d = do.Define("channelIDB", "(vmmid * 64 + channel)[{0}]".format(linkCut))
-	h = d.Define( "ChPdo", "pdo[{0}]".format(linkCut) ).Histo2D( 
-		("x", "", 512, -0.5, 511.5, 512, -0.5, 1023.5), "channelIDB", "ChPdo")
-	l_histo.append((b, h))
-	l_name.append("pdo_vs_hit")
-
+    d = do.Define("channelIDB", "(vmmidNew * 64 + channel)[{0}]".format(linkCut))
+    h = d.Define( "ChPdo", "pdo[{0}]".format(linkCut) ).Histo2D( 
+        ("x", "", 512, -0.5, 511.5, 512, -0.5, 1023.5), "channelIDB", "ChPdo")
+    l_histo.append((b, h))
+    l_name.append("pdo_vs_hit")
 
 for name, tup in zip(l_name, l_histo):
 	b, h = tup[0], tup[1]
 	c = R.TCanvas(b, "canvas of board : " + b, 800, 600)
 	h.Draw()
 	c.Print(full_dir + b + "_" + name + ".pdf")
-	c.Print(full_dir + b + "_" + name + ".root")
+	#  c.Print(full_dir + b + "_" + name + ".root")
