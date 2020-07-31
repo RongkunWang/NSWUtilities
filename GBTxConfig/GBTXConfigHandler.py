@@ -64,15 +64,16 @@ class GBTXConfigHandler():
             for long_word in val:
                 for word in long_word.rstrip().split("\n"):
                     self.reg.append(word)
-            if self.ICaddr == 2:
-                # watchdog timer
-                # 00 means turn off
-                # if set to 07, turned on, and there is no fiber connected, 
-                #  it will constantly reset the gbtx, which is what we don't want.
-                print("Overwritting GBTx2 registers 50, 52, 254 to 00")
-                self.reg[50] = "00"
-                self.reg[52] = "00"
-                self.reg[254] = "00"
+            self.overwrite_gbtx2()
+            #  if self.ICaddr == 2:
+                #  # watchdog timer
+                #  # 00 means turn off
+                #  # if set to 07, turned on, and there is no fiber connected, 
+                #  #  it will constantly reset the gbtx, which is what we don't want.
+                #  print("Overwritting GBTx2 registers 50, 52, 254 to 00")
+                #  self.reg[50] = "00"
+                #  self.reg[52] = "00"
+                #  self.reg[254] = "00"
             pass
         elif tp == "read_file":
             for line in val:
@@ -88,9 +89,17 @@ class GBTXConfigHandler():
             pass
         else:
             pass
-
-
         pass
+
+    def overwrite_gbtx2(self):
+        if self.ICaddr == 2:
+            # watchdog timer
+            # 00 means turn off
+            # if set to 07, turned on, and there is no fiber connected, 
+            #  it will constantly reset the gbtx, which is what we don't want.
+            self.reg[50] = "00"
+            self.reg[52] = "00"
+            self.reg[254] = "00"
 
     def DoOneByOne(self, val = True):
         self.do_one_by_one = val
@@ -102,15 +111,7 @@ class GBTXConfigHandler():
         pass
 
     def upload_str(self):
-        if self.ICaddr == 2:
-            # watchdog timer
-            # 00 means turn off
-            # if set to 07, turned on, and there is no fiber connected, 
-            #  it will constantly reset the gbtx, which is what we don't want.
-            self.reg[50] = "00"
-            self.reg[52] = "00"
-            self.reg[254] = "00"
-
+        self.overwrite_gbtx2()
         out = ""
         for word in self.reg:
             out += word + "\n"
@@ -297,7 +298,6 @@ class GBTXConfigHandler():
                 "-d", str(self.flx_card),
                 str(self.write_file_name)
                 ])
-
         time.sleep(1)
         # the first time, upload for GBTx-2 is always not working..
         # give it another try another time
@@ -464,13 +464,14 @@ class GBTXConfigHandler():
         print("===> start training")
         self.pa_train()
 
-        #  if not self.not_inspect:
-            #  print("====> INSPECT after train on")
-            #  # return true if locked, 
-            #  # what to do if else?
-            #  self.inspect_lock()
+        if not self.not_inspect:
+            print("====> INSPECT after train on")
+            # return true if locked, 
+            # what to do if else?
+            self.inspect_lock()
+
         # turn off..
-        #  self.pa_train(False)
+        self.pa_train(False)
 
         if not self.not_inspect:
             # well, check again?
