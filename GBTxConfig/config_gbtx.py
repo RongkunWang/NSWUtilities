@@ -29,15 +29,7 @@ previous versions:
 Author: Rongkun Wang  <rongkun.wang at cern.ch>
 """
 
-import os, sys
 import argparse
-
-sys.path.append("/afs/cern.ch/user/r/rowang/public/MyPythonUtilities")
-import MyPythonSystemUtil as mpsu
-
-sys.path.append("/afs/cern.ch/work/r/rowang/public/FELIX/GBTXConfig/")
-from other_words import * 
-from GBTXConfigHandler import  *
 
 parser = argparse.ArgumentParser(description='Config gbtx.')
 parser.add_argument("-i", "--init", action = "store_true",
@@ -49,6 +41,16 @@ parser.add_argument("-r", "--readback", action = "store_true",
 parser.add_argument("-n", "--not_inspect", action = "store_true",
         help = "This will cause the script not to inspect DLL(brute)!",)
 args = parser.parse_args()
+
+import os, sys
+sys.path.append("/afs/cern.ch/user/r/rowang/public/MyPythonUtilities")
+import MyPythonSystemUtil as mpsu
+
+#  sys.path.append("/afs/cern.ch/work/r/rowang/public/FELIX/GBTXConfig/")
+from other_words import *
+from GBTXConfigHandler import *
+
+
 
 ############################################
 #  don't need to change those above

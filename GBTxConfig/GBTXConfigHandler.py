@@ -464,12 +464,11 @@ class GBTXConfigHandler():
         print("===> start training")
         self.pa_train()
 
-        if not self.not_inspect:
-            print("====> INSPECT after train on")
-            # return true if locked, 
-            # what to do if else?
-            self.inspect_lock()
-
+        #  if not self.not_inspect:
+            #  print("====> INSPECT after train on")
+            #  # return true if locked, 
+            #  # what to do if else?
+            #  self.inspect_lock()
         # turn off..
         self.pa_train(False)
 
