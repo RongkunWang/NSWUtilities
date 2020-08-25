@@ -31,13 +31,15 @@ def fun(flxid, card, l_links, phase = 1):
 # phase 1
 #  fun(0, 0, range(12),     1)
 #  fun(0, 1, [6, 7, 9, 10], 1)
-#  fun(1, 0, range(12),     1)
-#  fun(1, 1, [6, 7, 9, 10], 1)
+#  fun(0, 3, range(4) + range(6, 10), 1)
+fun(1, 0, range(12),     1)
+fun(1, 1, [6, 7, 9, 10], 1)
+fun(1, 3, range(4) + range(6, 10), 1)
 
 # phase 2
-fun(0, 0, range(12),     2)
-fun(0, 1, [6, 7, 9, 10], 2)
-fun(0, 3, range(4) + range(6, 10), 2)
+#  fun(0, 0, range(12),     2)
+#  fun(0, 1, [6, 7, 9, 10], 2)
+#  fun(0, 3, range(4) + range(6, 10), 2)
 fun(1, 0, range(12),     2)
 fun(1, 1, [6, 7, 9, 10], 2)
 fun(1, 3, range(4) + range(6, 10), 2)
