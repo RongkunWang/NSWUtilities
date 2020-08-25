@@ -13,7 +13,7 @@
 # group3 11 (channel 4   0) reg153
 # group4 11 (channel 4   0) reg177
 
-import os, time
+import os, time, math
 import subprocess
 
 dict_phase = {
@@ -41,7 +41,7 @@ def timeout_run(*arg, **kwargs):
         print("unexpected exception", sys.exc_info()[0])
 
 class GBTXConfigHandler():
-    def __init__(self, tp, val, _flx_card, _fiberNo, _ICaddr, hostname=""):
+    def __init__(self, tp, val, _flx_card, _fiberNo, _ICaddr, hostname="", dir="GBTXconfigs"):
         """
         tp: 
             write_list: val is a list for writing and uploading
@@ -56,10 +56,12 @@ class GBTXConfigHandler():
         self.do_one_by_one = False
       
 
-        os.system("mkdir -p GBTXconfigs")
+        os.system("mkdir -p {0}".format(dir))
 
-        self.write_file_name = "GBTXconfigs/upload_card{0}_link{1}_gbt{2}.txt".format(_flx_card, _fiberNo, _ICaddr)
-        self.read_file_name  = "GBTXconfigs/read_card{0}_link{1}_gbt{2}.txt".format(_flx_card, _fiberNo, _ICaddr)
+        self.write_file_name = "{3}/upload_card{0}_link{1}_gbt{2}.txt".format(
+                _flx_card, _fiberNo, _ICaddr, dir)
+        self.read_file_name  = "{3}/read_card{0}_link{1}_gbt{2}.txt".format(
+                _flx_card, _fiberNo, _ICaddr, dir)
         if tp == "write_list":
             for long_word in val:
                 for word in long_word.rstrip().split("\n"):
@@ -121,6 +123,29 @@ class GBTXConfigHandler():
     def write_reg(self, reg, val):
         self.reg[reg] = val
 
+    def get_reg(self, reg):
+        return self.reg[reg]
+
+    def set_phase(self, gr, ch, val):
+        # val is form 
+        ch_base = 66 + gr * 24
+        for this_reg in [
+                ch_base + (3 - math.floor(ch / 2)),
+                ch_base + (3 - math.floor(ch / 2)) + 4,
+                ch_base + (3 - math.floor(ch / 2)) + 8,
+                ]:
+            new = self.reg[this_reg]
+            #  print(this_reg, new, new[1])
+            index = ch % 2
+            if index == 0:
+                self.reg[this_reg] = new[0] + val
+            else:
+                self.reg[this_reg] = val + new[1]
+            #  print(self.reg[this_reg])
+            pass
+        #  self.reg[]
+
+
     def read_phase(self):
         print("===> read phase from {0}".format(self.read_file_name))
         try:
@@ -143,10 +168,12 @@ class GBTXConfigHandler():
                     (67,  401),
                     (68,  400),
                     (69,  399),
+
                     (70,  402),
                     (71,  401),
                     (72,  400),
                     (73,  399),
+
                     (74,  402),
                     (75,  401),
                     (76,  400),
@@ -157,10 +184,12 @@ class GBTXConfigHandler():
                     (91,  405),
                     (92,  404),
                     (93,  403),
+
                     (94,  406),
                     (95,  405),
                     (96,  404),
                     (97,  403),
+
                     (98,  406),
                     (99,  405),
                     (100, 404),
@@ -526,7 +555,7 @@ class GBTXConfigHandler():
 
             if (val & mask) != mask:
                 series = "{0:#07b}".format(mask - (val & mask))[:1:-1]
-                print(val, series)
+                print(reg, val, series)
                 for i in range(len(series)):
                     if series[i] == "0":
                         continue
