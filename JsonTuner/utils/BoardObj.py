@@ -21,7 +21,12 @@ class BoardObj:
         self._roc_d_key = "rocCoreDigital"
         self._roc_a_key = "rocPllCoreAnalog"
         self._commons = {
-                self._roc_key:{}
+                self._vmm_key:{},
+                self._roc_key:{
+                    self._roc_a_key:{},
+                    self._roc_d_key:{},
+                    },
+                self._tds_key:{},
                 }
         for key in raw_data.keys():
             if self._vmm_key == key:
@@ -31,8 +36,8 @@ class BoardObj:
                 self._commons[self._tds_key] = raw_data[self._tds_key]
                 continue
             if self._roc_key == key:
-                self._commons[self._roc_key][self._roc_d_key] = raw_data[self._roc_key][self._roc_d_key]
                 self._commons[self._roc_key][self._roc_a_key] = raw_data[self._roc_key][self._roc_a_key]
+                self._commons[self._roc_key][self._roc_d_key] = raw_data[self._roc_key][self._roc_d_key]
                 continue
             if key[:4] not in ["SFEB", "PFEB", "MMFE"]:
                 continue
@@ -58,17 +63,28 @@ class BoardObj:
 
             for chip, chip_reg in l_chip.items():
                 if self._roc_d_key == chip:
-                    l_chip[chip] = merge_dict(chip_reg, self._commons[self._roc_key][self._roc_d_key])
+                    self._boards[board][chip] = merge_dict(chip_reg, self._commons[self._roc_key][self._roc_d_key])
                     continue
                 if self._roc_a_key == chip:
-                    l_chip[chip] == merge_dict(chip_reg, self._commons[self._roc_key][self._roc_a_key])
+                    self._boards[board][chip] = merge_dict(chip_reg, self._commons[self._roc_key][self._roc_a_key])
+                    #  print(self._commons[self._roc_key][self._roc_a_key])
+                    #  print(self._boards[board][chip])
+                    #  print()
                 pass
 
             for i in vmmRange:
-                l_chip["vmm{0}".format(i)] = merge_dict(chip_reg, 
+                chip = "vmm{0}".format(i) 
+                if chip not in self._boards[board]: 
+                    self._boards[board][chip] = {}
+                self._boards[board][chip] = merge_dict(self._boards[board][chip],
                         self._commons[self._vmm_key])
+
             for i in tdsRange:
-                l_chip["tds{0}".format(i)] = merge_dict(chip_reg, self._commons[self._tds_key])
+                chip = "tds{0}".format(i)
+                if chip not in self._boards[board]: 
+                    self._boards[board][chip] = {}
+                self._boards[board][chip] = merge_dict(self._boards[board][chip],
+                        self._commons[self._tds_key])
             pass
         pass
 
