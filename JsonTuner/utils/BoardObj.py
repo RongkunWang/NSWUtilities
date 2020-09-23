@@ -8,7 +8,7 @@ import json
 from .JsonModules import merge_dict
 from .JsonModules import sort_dict
 
-class BoardObj:
+class BoardObj(object):
     def __init__(self, fin_name):
         self._fin_name = fin_name
         with open(fin_name) as fin:
@@ -98,13 +98,16 @@ class BoardObj:
 
     @property
     def boards(self):
+        print("property")
         return self._boards
 
     @boards.setter
     def boards(self, dict):
+        print("property setter")
         self._boards = dict
 
     def apply_one_board(self, name, new_reg):
+        print("apply one")
         self.boards[name] = merge_dict(new_reg, self.boards[name])
 
     def dump(self, name):
