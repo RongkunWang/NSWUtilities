@@ -18,7 +18,8 @@ parser.add_argument("-s", "--setup",
         type = str,
         default = "sTGC_GBTx2_320",
         help = "the configuration you want to apply, currently support\n"\
-        "1. sTGC_GBTx2_320")
+        "1. sTGC_GBTx2_320\n"\
+        "2. sTGC_640")
 options = parser.parse_args()
 
 import sys, os
@@ -186,13 +187,43 @@ dict_apply_summary = {
 
 
 "sTGC_640": {
+    ("PFEB", "Q1"): { 
+        "rocCoreDigital":{
+            "reg001elinkSpeed":{
+                "sroc0":0,
+                "sroc1":0,
+                "sroc2":0,
+                "sroc3":0,
+                }, 
+            }
+        },
+    ("PFEB", "Q2"): { 
+        "rocCoreDigital":{
+            "reg001elinkSpeed":{
+                "sroc0":0,
+                "sroc1":0,
+                "sroc2":0,
+                "sroc3":0,
+                }, 
+            }
+        },
+    ("PFEB", "Q3"): { 
+        "rocCoreDigital":{
+            "reg001elinkSpeed":{
+                "sroc0":0,
+                "sroc1":0,
+                "sroc2":0,
+                "sroc3":0,
+                }, 
+            }
+        },
     ("SFEB", "Q1"):{
         "rocCoreDigital":{
             "reg001elinkSpeed":{
-                "sroc0":3,
-                "sroc1":3,
-                "sroc2":2,
-                "sroc3":2,
+                "sroc0":0,
+                "sroc1":0,
+                "sroc2":0,
+                "sroc3":0,
                 }, 
             "reg002sRoc0VmmConnections":{
                 "vmm0": 1,
@@ -239,10 +270,10 @@ dict_apply_summary = {
     ("SFEB", "Q2"):{
             "rocCoreDigital":{
                 "reg001elinkSpeed":{
-                    "sroc0":2,
-                    "sroc1":2,
-                    "sroc2":2,
-                    "sroc3":2,
+                    "sroc0":0,
+                    "sroc1":0,
+                    "sroc2":0,
+                    "sroc3":0,
                     },
                 "reg002sRoc0VmmConnections":{
                     "vmm0": 1,
@@ -289,10 +320,10 @@ dict_apply_summary = {
     ("SFEB", "Q3"):{
             "rocCoreDigital":{
                 "reg001elinkSpeed":{
-                    "sroc0":1,
-                    "sroc1":1,
-                    "sroc2":1,
-                    "sroc3":1,
+                    "sroc0":0,
+                    "sroc1":0,
+                    "sroc2":0,
+                    "sroc3":0,
                     },
                 "reg002sRoc0VmmConnections":{ 
                     "vmm0": 1, 
