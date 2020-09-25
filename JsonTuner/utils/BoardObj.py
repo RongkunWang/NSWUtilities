@@ -98,16 +98,16 @@ class BoardObj(object):
 
     @property
     def boards(self):
-        print("property")
+        #  print("property")
         return self._boards
 
     @boards.setter
     def boards(self, dict):
-        print("property setter")
+        #  print("property setter")
         self._boards = dict
 
     def apply_one_board(self, name, new_reg):
-        print("apply one")
+        #  print("apply one")
         self.boards[name] = merge_dict(new_reg, self.boards[name])
 
     def dump(self, name):
