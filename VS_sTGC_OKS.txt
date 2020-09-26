@@ -1,0 +1,201 @@
+using overwritten "boards" setting
+<obj class="SwRodInputLink" id="A14IP_L1Q1pFEB_a">
+  <attr name="FelixId" type="u64" val="2056"/>
+  <attr name="DetectorId" type="u64" val="13312"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/pad/A14/L0/R0/G0"/>
+</obj>
+
+<obj class="SwRodInputLink" id="A14IP_L1Q1pFEB_b">
+  <attr name="FelixId" type="u64" val="2064"/>
+  <attr name="DetectorId" type="u64" val="13313"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/pad/A14/L0/R0/G1"/>
+</obj>
+
+<obj class="SwRodInputLink" id="A14IP_L1Q2pFEB">
+  <attr name="FelixId" type="u64" val="2072"/>
+  <attr name="DetectorId" type="u64" val="13320"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/pad/A14/L0/R1/G0"/>
+</obj>
+
+<obj class="SwRodInputLink" id="A14IP_L1Q3pFEB">
+  <attr name="FelixId" type="u64" val="2081"/>
+  <attr name="DetectorId" type="u64" val="13328"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/pad/A14/L0/R2/G0"/>
+</obj>
+
+<!---                    separation                    -->
+<obj class="SwRodInputLink" id="A14IP_L1Q1sFEB_a">
+  <attr name="FelixId" type="u64" val="2120"/>
+  <attr name="DetectorId" type="u64" val="46080"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/strip/A14/L0/R0/G0"/>
+</obj>
+
+<obj class="SwRodInputLink" id="A14IP_L1Q1sFEB_b">
+  <attr name="FelixId" type="u64" val="2128"/>
+  <attr name="DetectorId" type="u64" val="46081"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/strip/A14/L0/R0/G1"/>
+</obj>
+
+<obj class="SwRodInputLink" id="A14IP_L1Q2sFEB">
+  <attr name="FelixId" type="u64" val="2136"/>
+  <attr name="DetectorId" type="u64" val="46088"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/strip/A14/L0/R1/G0"/>
+</obj>
+
+<obj class="SwRodInputLink" id="A14IP_L1Q3sFEB">
+  <attr name="FelixId" type="u64" val="2145"/>
+  <attr name="DetectorId" type="u64" val="46096"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/strip/A14/L0/R2/G0"/>
+</obj>
+
+<!---                    separation                    -->
+<obj class="SwRodInputLink" id="A14IP_L2Q1pFEB_a">
+  <attr name="FelixId" type="u64" val="2248"/>
+  <attr name="DetectorId" type="u64" val="13440"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/pad/A14/L1/R0/G0"/>
+</obj>
+
+<obj class="SwRodInputLink" id="A14IP_L2Q1pFEB_b">
+  <attr name="FelixId" type="u64" val="2256"/>
+  <attr name="DetectorId" type="u64" val="13441"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/pad/A14/L1/R0/G1"/>
+</obj>
+
+<obj class="SwRodInputLink" id="A14IP_L2Q2pFEB">
+  <attr name="FelixId" type="u64" val="2264"/>
+  <attr name="DetectorId" type="u64" val="13448"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/pad/A14/L1/R1/G0"/>
+</obj>
+
+<obj class="SwRodInputLink" id="A14IP_L2Q3pFEB">
+  <attr name="FelixId" type="u64" val="2273"/>
+  <attr name="DetectorId" type="u64" val="13456"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/pad/A14/L1/R2/G0"/>
+</obj>
+
+<!---                    separation                    -->
+<obj class="SwRodInputLink" id="A14IP_L2Q1sFEB_a">
+  <attr name="FelixId" type="u64" val="2312"/>
+  <attr name="DetectorId" type="u64" val="46208"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/strip/A14/L1/R0/G0"/>
+</obj>
+
+<obj class="SwRodInputLink" id="A14IP_L2Q1sFEB_b">
+  <attr name="FelixId" type="u64" val="2320"/>
+  <attr name="DetectorId" type="u64" val="46209"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/strip/A14/L1/R0/G1"/>
+</obj>
+
+<obj class="SwRodInputLink" id="A14IP_L2Q2sFEB">
+  <attr name="FelixId" type="u64" val="2328"/>
+  <attr name="DetectorId" type="u64" val="46216"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/strip/A14/L1/R1/G0"/>
+</obj>
+
+<obj class="SwRodInputLink" id="A14IP_L2Q3sFEB">
+  <attr name="FelixId" type="u64" val="2337"/>
+  <attr name="DetectorId" type="u64" val="46224"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/strip/A14/L1/R2/G0"/>
+</obj>
+
+<!---                    separation                    -->
+<obj class="SwRodInputLink" id="A14IP_L3Q1pFEB_a">
+  <attr name="FelixId" type="u64" val="2440"/>
+  <attr name="DetectorId" type="u64" val="13568"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/pad/A14/L2/R0/G0"/>
+</obj>
+
+<obj class="SwRodInputLink" id="A14IP_L3Q1pFEB_b">
+  <attr name="FelixId" type="u64" val="2448"/>
+  <attr name="DetectorId" type="u64" val="13569"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/pad/A14/L2/R0/G1"/>
+</obj>
+
+<obj class="SwRodInputLink" id="A14IP_L3Q2pFEB">
+  <attr name="FelixId" type="u64" val="2456"/>
+  <attr name="DetectorId" type="u64" val="13576"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/pad/A14/L2/R1/G0"/>
+</obj>
+
+<obj class="SwRodInputLink" id="A14IP_L3Q3pFEB">
+  <attr name="FelixId" type="u64" val="2465"/>
+  <attr name="DetectorId" type="u64" val="13584"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/pad/A14/L2/R2/G0"/>
+</obj>
+
+<!---                    separation                    -->
+<obj class="SwRodInputLink" id="A14IP_L3Q1sFEB_a">
+  <attr name="FelixId" type="u64" val="2504"/>
+  <attr name="DetectorId" type="u64" val="46336"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/strip/A14/L2/R0/G0"/>
+</obj>
+
+<obj class="SwRodInputLink" id="A14IP_L3Q1sFEB_b">
+  <attr name="FelixId" type="u64" val="2512"/>
+  <attr name="DetectorId" type="u64" val="46337"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/strip/A14/L2/R0/G1"/>
+</obj>
+
+<obj class="SwRodInputLink" id="A14IP_L3Q2sFEB">
+  <attr name="FelixId" type="u64" val="2520"/>
+  <attr name="DetectorId" type="u64" val="46344"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/strip/A14/L2/R1/G0"/>
+</obj>
+
+<obj class="SwRodInputLink" id="A14IP_L3Q3sFEB">
+  <attr name="FelixId" type="u64" val="2529"/>
+  <attr name="DetectorId" type="u64" val="46352"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/strip/A14/L2/R2/G0"/>
+</obj>
+
+<!---                    separation                    -->
+<obj class="SwRodInputLink" id="A14IP_L4Q1pFEB_a">
+  <attr name="FelixId" type="u64" val="2632"/>
+  <attr name="DetectorId" type="u64" val="13696"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/pad/A14/L3/R0/G0"/>
+</obj>
+
+<obj class="SwRodInputLink" id="A14IP_L4Q1pFEB_b">
+  <attr name="FelixId" type="u64" val="2640"/>
+  <attr name="DetectorId" type="u64" val="13697"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/pad/A14/L3/R0/G1"/>
+</obj>
+
+<obj class="SwRodInputLink" id="A14IP_L4Q2pFEB">
+  <attr name="FelixId" type="u64" val="2648"/>
+  <attr name="DetectorId" type="u64" val="13704"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/pad/A14/L3/R1/G0"/>
+</obj>
+
+<obj class="SwRodInputLink" id="A14IP_L4Q3pFEB">
+  <attr name="FelixId" type="u64" val="2657"/>
+  <attr name="DetectorId" type="u64" val="13712"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/pad/A14/L3/R2/G0"/>
+</obj>
+
+<!---                    separation                    -->
+<obj class="SwRodInputLink" id="A14IP_L4Q1sFEB_a">
+  <attr name="FelixId" type="u64" val="2696"/>
+  <attr name="DetectorId" type="u64" val="46464"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/strip/A14/L3/R0/G0"/>
+</obj>
+
+<obj class="SwRodInputLink" id="A14IP_L4Q1sFEB_b">
+  <attr name="FelixId" type="u64" val="2704"/>
+  <attr name="DetectorId" type="u64" val="46465"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/strip/A14/L3/R0/G1"/>
+</obj>
+
+<obj class="SwRodInputLink" id="A14IP_L4Q2sFEB">
+  <attr name="FelixId" type="u64" val="2712"/>
+  <attr name="DetectorId" type="u64" val="46472"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/strip/A14/L3/R1/G0"/>
+</obj>
+
+<obj class="SwRodInputLink" id="A14IP_L4Q3sFEB">
+  <attr name="FelixId" type="u64" val="2721"/>
+  <attr name="DetectorId" type="u64" val="46480"/>
+  <attr name="DetectorName" type="string" val="NSW/L1A/sTGC/strip/A14/L3/R2/G0"/>
+</obj>
+
+<!---                    separation                    -->

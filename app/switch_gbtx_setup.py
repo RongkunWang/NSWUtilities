@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 hard-coded implementation of setting 
 """
@@ -7,7 +7,9 @@ from __future__ import division
 from __future__ import absolute_import
 
 import argparse
-parser = argparse.ArgumentParser(description='Switch gbtx setup.')
+class CustomFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter):
+    pass
+parser = argparse.ArgumentParser(description='Switch gbtx setup.', formatter_class = CustomFormatter)
 parser.add_argument("-i", "--input", 
         type = str,
         help = "the input json to grab configuration from.")
@@ -18,8 +20,8 @@ parser.add_argument("-s", "--setup",
         type = str,
         default = "sTGC_GBTx2_320",
         help = "the configuration you want to apply, currently support\n"\
-        "1. sTGC_GBTx2_320\n"\
-        "2. sTGC_640")
+        "    1. sTGC_GBTx2_320\n"\
+        "    2. sTGC_640")
 options = parser.parse_args()
 
 import sys, os

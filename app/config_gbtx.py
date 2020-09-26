@@ -46,9 +46,10 @@ import os, sys
 sys.path.append("/afs/cern.ch/user/r/rowang/public/MyPythonUtilities")
 import MyPythonSystemUtil as mpsu
 
-#  sys.path.append("/afs/cern.ch/work/r/rowang/public/FELIX/GBTXConfig/")
-from other_words import *
-from GBTXConfigHandler import *
+#  sys.path.append("/afs/cern.ch/work/r/rowang/public/FELIX/NSWUtilities/GBTxConfig/")
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
+from GBTxConfig.other_words import *
+from GBTxConfig.GBTXConfigHandler import *
 
 
 
@@ -140,6 +141,7 @@ for arg_tuple in l_gbtxn:
 
     con = GBTXConfigHandler("write_list", l_words, 
             flx_card, fiberNo, ICaddr, hostname)
+    con.DoOneByOne()
     
 
     if ICaddr == 2:
@@ -150,13 +152,13 @@ for arg_tuple in l_gbtxn:
     #  con.overwrite_dll()
 
     if  args.init:
-        print("===> upload all config")
+        print(mpsu.green("===> upload all config"))
         con.upload_config()
     elif args.readback:
         con.read_config(1)
     elif args.train:
         # first upload the very first config with IC
-        print("===> upload all config")
+        print(mpsu.green("===> upload all config"))
         con.upload_config()
 
         # do the training! or just checking directly!

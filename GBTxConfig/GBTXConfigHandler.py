@@ -390,7 +390,7 @@ class GBTXConfigHandler():
 
 
     def pa_train(self, on=True):
-        # TODO: do i need to train group 0 (sca)
+        # do not do for group 0 (sca)
         #  group0 = [ 78, 79, 80 ]
         group0 = [  ]
         group_other = [
@@ -401,6 +401,7 @@ class GBTXConfigHandler():
         group4 = [
                 174, 175, 176,
                 ]
+        # do not do for EC (sca)
         #  group_EC = [ 245 ]
         group_EC = [  ]
 
