@@ -2,13 +2,14 @@
 """
 hard-coded implementation of setting 
 """
-from __future__ import print_function
-from __future__ import division
-from __future__ import absolute_import
+#  from __future__ import print_function
+#  from __future__ import division
+#  from __future__ import absolute_import
 
 import argparse
-class CustomFormatter(argparse.ArgumentDefaultsHelpFormatter, argparse.RawDescriptionHelpFormatter):
+class CustomFormatter(argparse.RawDescriptionHelpFormatter, argparse.ArgumentDefaultsHelpFormatter):
     pass
+
 parser = argparse.ArgumentParser(description='Switch gbtx setup.', formatter_class = CustomFormatter)
 parser.add_argument("-i", "--input", 
         type = str,
@@ -21,358 +22,24 @@ parser.add_argument("-s", "--setup",
         default = "sTGC_GBTx2_320",
         help = "the configuration you want to apply, currently support\n"\
         "    1. sTGC_GBTx2_320\n"\
-        "    2. sTGC_640")
+        "    2. sTGC_640\n"\
+        "    3. sTGC_pQ1_split")
 options = parser.parse_args()
 
 import sys, os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
+import JsonTuner.configs.sTGC_640
+import JsonTuner.configs.sTGC_GBTx2_320
+import JsonTuner.configs.sTGC_pQ1_split
 from JsonTuner.utils.BoardObj import BoardObj
-import JsonTuner.tests.test_module as tm
 
 dict_apply_summary = {
-
-"nothing": {},
-
-"sTGC_GBTx2_320": {
-    ("SFEB", "Q1"):{
-        "rocCoreDigital":{
-            "reg001elinkSpeed":{
-                "sroc0":3,
-                "sroc1":3,
-                "sroc2":2,
-                "sroc3":2,
-                }, 
-            "reg002sRoc0VmmConnections":{
-                "vmm0": 1,
-                "vmm1": 1,
-                "vmm2": 0,
-                "vmm3": 0,
-                "vmm4": 0,
-                "vmm5": 0,
-                "vmm6": 0,
-                "vmm7": 0
-                },
-            "reg003sRoc1VmmConnections":{
-                "vmm0": 0,
-                "vmm1": 0,
-                "vmm2": 0,
-                "vmm3": 0,
-                "vmm4": 1,
-                "vmm5": 1,
-                "vmm6": 0,
-                "vmm7": 0
-                },
-            "reg004sRoc2VmmConnections":{
-                "vmm0": 0,
-                "vmm1": 0,
-                "vmm2": 1,
-                "vmm3": 1,
-                "vmm4": 0,
-                "vmm5": 0,
-                "vmm6": 0,
-                "vmm7": 0
-                },
-            "reg005sRoc3VmmConnections":{
-                "vmm0": 0,
-                "vmm1": 0,
-                "vmm2": 0,
-                "vmm3": 0,
-                "vmm4": 0,
-                "vmm5": 0,
-                "vmm6": 1,
-                "vmm7": 1
-                },
-            },
-        }, 
-    ("SFEB", "Q2"):{
-            "rocCoreDigital":{
-                "reg001elinkSpeed":{
-                    "sroc0":2,
-                    "sroc1":2,
-                    "sroc2":2,
-                    "sroc3":2,
-                    },
-                "reg002sRoc0VmmConnections":{
-                    "vmm0": 1,
-                    "vmm1": 1,
-                    "vmm2": 1,
-                    "vmm3": 1,
-                    "vmm4": 0,
-                    "vmm5": 0,
-                    "vmm6": 0,
-                    "vmm7": 0
-                    },
-                "reg003sRoc1VmmConnections":{
-                    "vmm0": 0,
-                    "vmm1": 0,
-                    "vmm2": 0,
-                    "vmm3": 0,
-                    "vmm4": 0,
-                    "vmm5": 0,
-                    "vmm6": 0,
-                    "vmm7": 0
-                    },
-                "reg004sRoc2VmmConnections":{
-                    "vmm0": 0, 
-                    "vmm1": 0, 
-                    "vmm2": 0, 
-                    "vmm3": 0, 
-                    "vmm4": 1,
-                    "vmm5": 1,
-                    "vmm6": 1, 
-                    "vmm7": 1 
-                    },
-                "reg005sRoc3VmmConnections":{ 
-                    "vmm0": 0, 
-                    "vmm1": 0, 
-                    "vmm2": 0, 
-                    "vmm3": 0, 
-                    "vmm4": 0,
-                    "vmm5": 0,
-                    "vmm6": 0, 
-                    "vmm7": 0 
-                    },
-                },
-            },
-    ("SFEB", "Q3"):{
-            "rocCoreDigital":{
-                "reg001elinkSpeed":{
-                    "sroc0":1,
-                    "sroc1":1,
-                    "sroc2":1,
-                    "sroc3":1,
-                    },
-                "reg002sRoc0VmmConnections":{ 
-                    "vmm0": 1, 
-                    "vmm1": 1, 
-                    "vmm2": 1, 
-                    "vmm3": 1, 
-                    "vmm4": 0,
-                    "vmm5": 0,
-                    "vmm6": 0, 
-                    "vmm7": 0 
-                    },
-                "reg003sRoc1VmmConnections":{ 
-                    "vmm0": 0, 
-                    "vmm1": 0, 
-                    "vmm2": 0, 
-                    "vmm3": 0, 
-                    "vmm4": 0,
-                    "vmm5": 0,
-                    "vmm6": 0, 
-                    "vmm7": 0 
-                    },
-                "reg004sRoc2VmmConnections":{ 
-                    "vmm0": 0, 
-                    "vmm1": 0, 
-                    "vmm2": 0, 
-                    "vmm3": 0, 
-                    "vmm4": 1,
-                    "vmm5": 1,
-                    "vmm6": 1, 
-                    "vmm7": 1 
-                    },
-                "reg005sRoc3VmmConnections":{ 
-                    "vmm0": 0, 
-                    "vmm1": 0, 
-                    "vmm2": 0, 
-                    "vmm3": 0, 
-                    "vmm4": 0,
-                    "vmm5": 0,
-                    "vmm6": 0, 
-                    "vmm7": 0 
-                    },
-                },
-            },
-        }, 
-
-
-"sTGC_640": {
-    ("PFEB", "Q1"): { 
-        "rocCoreDigital":{
-            "reg001elinkSpeed":{
-                "sroc0":0,
-                "sroc1":0,
-                "sroc2":0,
-                "sroc3":0,
-                }, 
-            }
-        },
-    ("PFEB", "Q2"): { 
-        "rocCoreDigital":{
-            "reg001elinkSpeed":{
-                "sroc0":0,
-                "sroc1":0,
-                "sroc2":0,
-                "sroc3":0,
-                }, 
-            }
-        },
-    ("PFEB", "Q3"): { 
-        "rocCoreDigital":{
-            "reg001elinkSpeed":{
-                "sroc0":0,
-                "sroc1":0,
-                "sroc2":0,
-                "sroc3":0,
-                }, 
-            }
-        },
-    ("SFEB", "Q1"):{
-        "rocCoreDigital":{
-            "reg001elinkSpeed":{
-                "sroc0":0,
-                "sroc1":0,
-                "sroc2":0,
-                "sroc3":0,
-                }, 
-            "reg002sRoc0VmmConnections":{
-                "vmm0": 1,
-                "vmm1": 1,
-                "vmm2": 0,
-                "vmm3": 0,
-                "vmm4": 0,
-                "vmm5": 0,
-                "vmm6": 0,
-                "vmm7": 0
-                },
-            "reg003sRoc1VmmConnections":{
-                "vmm0": 0,
-                "vmm1": 0,
-                "vmm2": 0,
-                "vmm3": 0,
-                "vmm4": 1,
-                "vmm5": 1,
-                "vmm6": 0,
-                "vmm7": 0
-                },
-            "reg004sRoc2VmmConnections":{
-                "vmm0": 0,
-                "vmm1": 0,
-                "vmm2": 1,
-                "vmm3": 1,
-                "vmm4": 0,
-                "vmm5": 0,
-                "vmm6": 0,
-                "vmm7": 0
-                },
-            "reg005sRoc3VmmConnections":{
-                "vmm0": 0,
-                "vmm1": 0,
-                "vmm2": 0,
-                "vmm3": 0,
-                "vmm4": 0,
-                "vmm5": 0,
-                "vmm6": 1,
-                "vmm7": 1
-                },
-            },
-        }, 
-    ("SFEB", "Q2"):{
-            "rocCoreDigital":{
-                "reg001elinkSpeed":{
-                    "sroc0":0,
-                    "sroc1":0,
-                    "sroc2":0,
-                    "sroc3":0,
-                    },
-                "reg002sRoc0VmmConnections":{
-                    "vmm0": 1,
-                    "vmm1": 1,
-                    "vmm2": 1,
-                    "vmm3": 1,
-                    "vmm4": 0,
-                    "vmm5": 0,
-                    "vmm6": 0,
-                    "vmm7": 0
-                    },
-                "reg003sRoc1VmmConnections":{
-                    "vmm0": 0,
-                    "vmm1": 0,
-                    "vmm2": 0,
-                    "vmm3": 0,
-                    "vmm4": 0,
-                    "vmm5": 0,
-                    "vmm6": 0,
-                    "vmm7": 0
-                    },
-                "reg004sRoc2VmmConnections":{
-                    "vmm0": 0, 
-                    "vmm1": 0, 
-                    "vmm2": 0, 
-                    "vmm3": 0, 
-                    "vmm4": 1,
-                    "vmm5": 1,
-                    "vmm6": 1, 
-                    "vmm7": 1 
-                    },
-                "reg005sRoc3VmmConnections":{ 
-                    "vmm0": 0, 
-                    "vmm1": 0, 
-                    "vmm2": 0, 
-                    "vmm3": 0, 
-                    "vmm4": 0,
-                    "vmm5": 0,
-                    "vmm6": 0, 
-                    "vmm7": 0 
-                    },
-                },
-            },
-    ("SFEB", "Q3"):{
-            "rocCoreDigital":{
-                "reg001elinkSpeed":{
-                    "sroc0":0,
-                    "sroc1":0,
-                    "sroc2":0,
-                    "sroc3":0,
-                    },
-                "reg002sRoc0VmmConnections":{ 
-                    "vmm0": 1, 
-                    "vmm1": 1, 
-                    "vmm2": 1, 
-                    "vmm3": 1, 
-                    "vmm4": 0,
-                    "vmm5": 0,
-                    "vmm6": 0, 
-                    "vmm7": 0 
-                    },
-                "reg003sRoc1VmmConnections":{ 
-                    "vmm0": 0, 
-                    "vmm1": 0, 
-                    "vmm2": 0, 
-                    "vmm3": 0, 
-                    "vmm4": 0,
-                    "vmm5": 0,
-                    "vmm6": 0, 
-                    "vmm7": 0 
-                    },
-                "reg004sRoc2VmmConnections":{ 
-                    "vmm0": 0, 
-                    "vmm1": 0, 
-                    "vmm2": 0, 
-                    "vmm3": 0, 
-                    "vmm4": 1,
-                    "vmm5": 1,
-                    "vmm6": 1, 
-                    "vmm7": 1 
-                    },
-                "reg005sRoc3VmmConnections":{ 
-                    "vmm0": 0, 
-                    "vmm1": 0, 
-                    "vmm2": 0, 
-                    "vmm3": 0, 
-                    "vmm4": 0,
-                    "vmm5": 0,
-                    "vmm6": 0, 
-                    "vmm7": 0 
-                    },
-                },
-            },
-        }, 
+    "nothing": {},
+    "sTGC_640": JsonTuner.configs.sTGC_640.configs,
+    "sTGC_GBTx2_320": JsonTuner.configs.sTGC_GBTx2_320.configs,
+    "sTGC_pQ1_split": JsonTuner.configs.sTGC_pQ1_split.configs,
     }
-
-
 
 if __name__ == "__main__":
     # TODO: replace with arg
