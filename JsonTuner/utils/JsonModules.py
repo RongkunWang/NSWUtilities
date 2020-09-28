@@ -9,6 +9,9 @@ from collections import OrderedDict
 
 import copy
 
+def is_dict(a):
+    return isinstance(a, dict)
+
 def merge_dict(uni, com):
     """ 
     takes two dictionaries uni, com.
@@ -20,7 +23,7 @@ def merge_dict(uni, com):
         if key not in uni:
             dout[key] = copy.deepcopy(value)
             continue
-        if type(value) == type({}):
+        if is_dict(value):
             dout[key] = merge_dict(uni[key], com[key])
             continue
         if key in uni:
@@ -37,7 +40,7 @@ def diff_dict(first_dict, second_dict):
     """
     dout = {}
     for key, value in first_dict.items():
-        if type(value) == type({}):
+        if is_dict(value):
             dtmp = diff_dict(first_dict[key], second_dict[key])
             if dtmp != {}:
                 dout[key] = dtmp
@@ -52,7 +55,7 @@ def sort_dict(dic):
     dout = dic.copy() 
     for key, value in dic.items():
         #  print(value)
-        if type(value) == type({}):
+        if is_dict(value):
             dout[key] = sort_dict(value)
         pass
     return OrderedDict(sorted(dout.items()))

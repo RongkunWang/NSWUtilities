@@ -201,6 +201,6 @@ d_opt = {
         }
 
 # 191
-#  func(d_opt)
+func(d_opt)
 # VS
-func(d_opt, sTGC_boards_VS)
+#  func(d_opt, sTGC_boards_VS)

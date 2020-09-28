@@ -1,12 +1,6 @@
 configs = {
     ("PFEB", "Q1"): {
         "rocCoreDigital":{
-            "reg001elinkSpeed":{
-                "sroc0":0,
-                "sroc1":0,
-                "sroc2":0,
-                "sroc3":0, 
-                }, 
             "reg002sRoc0VmmConnections":{ 
                 "vmm0": 0, 
                 "vmm1": 0, 

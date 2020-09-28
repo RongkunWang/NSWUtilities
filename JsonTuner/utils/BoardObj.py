@@ -30,14 +30,14 @@ class BoardObj(object):
                 }
         for key in raw_data.keys():
             if self._vmm_key == key:
-                self._commons[self._vmm_key] = raw_data[self._vmm_key]
+                self._commons[self._vmm_key] = sort_dict(raw_data[self._vmm_key])
                 continue
             if self._tds_key == key:
-                self._commons[self._tds_key] = raw_data[self._tds_key]
+                self._commons[self._tds_key] = sort_dict(raw_data[self._tds_key])
                 continue
             if self._roc_key == key:
-                self._commons[self._roc_key][self._roc_a_key] = raw_data[self._roc_key][self._roc_a_key]
-                self._commons[self._roc_key][self._roc_d_key] = raw_data[self._roc_key][self._roc_d_key]
+                self._commons[self._roc_key][self._roc_a_key] = sort_dict(raw_data[self._roc_key][self._roc_a_key])
+                self._commons[self._roc_key][self._roc_d_key] = sort_dict(raw_data[self._roc_key][self._roc_d_key])
                 continue
             if key[:4] not in ["SFEB", "PFEB", "MMFE"]:
                 continue
