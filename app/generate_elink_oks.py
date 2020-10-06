@@ -66,6 +66,17 @@ def func(d_opt, boards = {}):
                     l_elinks = [ebase(l_links[0]) + 24]
                 elif quad == 2:
                     l_elinks = [ebase(l_links[0]) + 33]
+            elif d_opt["type"] == "phase1-320":
+                if  quad == 0:
+                    l_grp = range(2)
+                    l_elinks = [ 
+                            ebase(l_links[0]) + 9,
+                            ebase(l_links[0]) + 17,
+                            ]
+                elif quad == 1:
+                    l_elinks = [ebase(l_links[0]) + 25]
+                elif quad == 2:
+                    l_elinks = [ebase(l_links[0]) + 33]
             elif d_opt["type"] == "phase1-gbtx2":
                 if  quad == 0 and "sFEB" in brd:
                     l_grp = range(4)
@@ -124,7 +135,7 @@ def func(d_opt, boards = {}):
                 elif  quad == 2:
                     l_grp = range(len(l_links))
                     for link in l_links:
-                        l_elinks += [ebase(link) + 36]
+                        l_elinks += [ebase(link) + 35]
                 else:
                     l_grp = []
                     continue
@@ -156,7 +167,7 @@ def func(d_opt, boards = {}):
 
 
 # baseline
-flxid = 1
+flxid = 5
 
 sTGC_boards_191 = [
             # name pattern, card and link for gbtx1 (gbtx2 if there is):
@@ -192,10 +203,11 @@ sTGC_boards_VS = [
 
 d_opt = {
         "side":    "A",
-        "sector":  14,
-        "type" : "phase1",
+        "sector":  10,
+        #  "type" : "phase1",
+        "type" : "phase1-320", # should be used, more modern
         #  "type" : "phase1-gbtx2",
-        #  "type" : "phase2-640",
+        #  "type" : "phase2-640", 
         #  "type" : "phase2-gbtx2-onlyQ1s",
         "boards": sTGC_boards_191
         }
