@@ -6,6 +6,13 @@ hard-coded implementation of setting
 #  from __future__ import division
 #  from __future__ import absolute_import
 
+list_arg = [
+        "sTGC_all320",
+        "sTGC_GBTx2_320",
+        "sTGC_pQ1_split",
+        "sTGC_640",
+        ]
+
 import argparse
 class CustomFormatter(argparse.RawDescriptionHelpFormatter, argparse.ArgumentDefaultsHelpFormatter):
     pass
@@ -20,26 +27,35 @@ parser.add_argument("-o", "--output",
 parser.add_argument("-s", "--setup", 
         type = str,
         default = "sTGC_GBTx2_320",
-        help = "the configuration you want to apply, currently support\n"\
-        "    1. sTGC_GBTx2_320\n"\
-        "    2. sTGC_640\n"\
-        "    3. sTGC_pQ1_split")
+        help = "the configuration you want to apply. You can have multiple application, segmented by comma \",\" . currently support\n" +\
+        "".join("    {0}. {1}\n".format(i, name) for i, name in enumerate(list_arg)) 
+        )
 options = parser.parse_args()
 
 import sys, os
+from importlib import import_module
 sys.path.append(os.path.dirname(os.path.abspath(__file__)) + "/..")
 
-import JsonTuner.configs.sTGC_640
-import JsonTuner.configs.sTGC_GBTx2_320
-import JsonTuner.configs.sTGC_pQ1_split
-from JsonTuner.utils.BoardObj import BoardObj
+#  import JsonTuner.configs.sTGC_640
+#  import JsonTuner.configs.sTGC_GBTx2_320
+#  import JsonTuner.configs.sTGC_pQ1_split
+
+import JsonTuner
 
 dict_apply_summary = {
     "nothing": {},
-    "sTGC_640": JsonTuner.configs.sTGC_640.configs,
-    "sTGC_GBTx2_320": JsonTuner.configs.sTGC_GBTx2_320.configs,
-    "sTGC_pQ1_split": JsonTuner.configs.sTGC_pQ1_split.configs,
+    #  "sTGC_640": JsonTuner.configs.sTGC_640.configs,
+    #  "sTGC_GBTx2_320": JsonTuner.configs.sTGC_GBTx2_320.configs,
+    #  "sTGC_pQ1_split": JsonTuner.configs.sTGC_pQ1_split.configs,
     }
+
+for name in list_arg:
+    import_module("." + name, package="JsonTuner.configs")
+    dict_apply_summary[name] = getattr(JsonTuner.configs, name).configs
+
+from JsonTuner.utils.BoardObj import BoardObj
+
+
 
 if __name__ == "__main__":
     # TODO: replace with arg
@@ -47,20 +63,22 @@ if __name__ == "__main__":
     #  output = "replaced_gbtx2.json"
     #  setup = "sTGC_GBTx2_320"
 
+    this_input = options.input
+    for setup in options.setup.split(","):
 
-
-    conf = BoardObj(options.input)
-    for bd in conf.boards:
-        for board_key, dict_apply in dict_apply_summary[options.setup].items():
-            switch = True
-            for key in board_key:
-                if key not in bd:
-                    switch = False
+        conf = BoardObj(this_input)
+        for bd in conf.boards:
+            for board_key, dict_apply in dict_apply_summary[setup].items():
+                switch = True
+                for key in board_key:
+                    if key not in bd:
+                        switch = False
+                        break
+                    pass # loop over all keywords
+                if switch:
+                    conf.apply_one_board(bd, dict_apply)
                     break
-                pass # loop over all keywords
-            if switch:
-                conf.apply_one_board(bd, dict_apply)
-                break
-            pass # loop over settings, see if this apply this board
-        pass # loop over boards
-    conf.dump(options.output)
+                pass # loop over settings, see if this apply this board
+            pass # loop over boards
+        conf.dump(options.output)
+        this_input = options.output
