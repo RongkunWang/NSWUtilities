@@ -77,12 +77,12 @@ l_gbtxn = [
         #  (3, 2, 0, ""),
         ]
 
-# group 0-4 phase selection, subject to flx fmw
-g0_phase = 80
-g1_phase = 80
-g2_phase = 160
-g3_phase = 160
-g4_phase = 320
+# group 0-4 rate selection, subject to flx fmw
+g0_rate = 80
+g1_rate = 80
+g2_rate = 160
+g3_rate = 160
+g4_rate = 320
 
 ############################################
 #  don't need to change those below
@@ -109,11 +109,11 @@ for arg_tuple in l_gbtxn:
     hostname = ""
 
     if ICaddr == 1:
-        g0_phase = 80
+        g0_rate = 80
 
 
     if ICaddr == 2:
-        g0_phase = 0
+        g0_rate = 0
         hostname = arg_tuple[3] 
 
     # default config
@@ -121,21 +121,21 @@ for arg_tuple in l_gbtxn:
             words_0_61,
             phase_mode["training"],   
             # 63 inEportCtr1    group0
-            dict_phase[g0_phase],
+            dict_rate[g0_rate],
             words_64_67,
             gbt_dict[ICaddr],
             words_78_86,
             # 87 inEportCtr25   group1
-            dict_phase[g1_phase],
+            dict_rate[g0_rate],
             words_88_110,
             # 111 inEportCtr49  group2
-            dict_phase[g2_phase],
+            dict_rate[g0_rate],
             words_112_134,
             # 135 inEportCtr73  group3
-            dict_phase[g3_phase],
+            dict_rate[g0_rate],
             words_136_158,
             # 159 inEportCtr97  group4
-            dict_phase[g4_phase],
+            dict_rate[g0_rate],
             words_160_368,
             ]
 

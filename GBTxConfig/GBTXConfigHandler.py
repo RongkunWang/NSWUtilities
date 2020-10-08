@@ -16,12 +16,15 @@
 import os, time, math
 import subprocess
 
-dict_phase = {
+dict_rate = {
         0:  "00",
         80: "15",
         160:"2a",
         320:"3f", 
         }
+
+# backward compatible..
+dict_phase = dict_rate
 
 # phase aligner mode
 phase_mode = {
@@ -406,7 +409,7 @@ class GBTXConfigHandler():
         group_EC = [  ]
 
 
-        if self.do_one_by_one:
+        if self.do_one_by_one and self.ICaddr != 2:
             # a bit deprecated.. don't use
             if on:
                 self.reg[62] = phase_mode["training"]
