@@ -47,19 +47,23 @@ class BoardObj(object):
 
         pass
 
+    def return_type_of_board(self, board):
+        vmmRange = range(8)
+        tdsRange = range(4)
+        if "MMFE" == board[:4]:
+            tdsRange = []
+        if "SFEB6" == board[:5]:
+            vmmRange = range(2, 8)
+            tdsRange = range(1, 4)
+        if "PFEB"  == board[:4]:
+            vmmRange = range(3)
+            tdsRange = range(1)
+        return vmmRange, tdsRange
+
     def _supplement(self,):
         for board, l_chip in self._boards.items():
             # covers SFEB8 SFEB
-            vmmRange = range(8)
-            tdsRange = range(4)
-            if "MMFE" == board[:4]:
-                tdsRange = []
-            if "SFEB6" == board[:5]:
-                vmmRange = range(2, 8)
-                tdsRange = range(1, 4)
-            if "PFEB"  == board[:4]:
-                vmmRange = range(3)
-                tdsRange = range(1)
+            vmmRange, tdsRange = self.return_type_of_board(board)
 
             for chip, chip_reg in l_chip.items():
                 if self._roc_d_key == chip:
