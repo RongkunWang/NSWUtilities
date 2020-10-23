@@ -1,12 +1,6 @@
 configs = {
     ("SFEB", "Q1"):{
         "rocCoreDigital":{
-            "reg001elinkSpeed":{
-                "sroc0":3,
-                "sroc1":3,
-                "sroc2":2,
-                "sroc3":2,
-                }, 
             "reg002sRoc0VmmConnections":{
                 "vmm0": 1,
                 "vmm1": 1,
@@ -51,12 +45,6 @@ configs = {
         }, 
     ("SFEB", "Q2"):{
             "rocCoreDigital":{
-                "reg001elinkSpeed":{
-                    "sroc0":2,
-                    "sroc1":2,
-                    "sroc2":2,
-                    "sroc3":2,
-                    },
                 "reg002sRoc0VmmConnections":{
                     "vmm0": 1,
                     "vmm1": 1,
@@ -101,12 +89,6 @@ configs = {
             }, 
     ("SFEB", "Q3"):{
             "rocCoreDigital":{
-                "reg001elinkSpeed":{
-                    "sroc0":1,
-                    "sroc1":1,
-                    "sroc2":1,
-                    "sroc3":1,
-                    },
                 "reg002sRoc0VmmConnections":{ 
                     "vmm0": 1, 
                     "vmm1": 1, 

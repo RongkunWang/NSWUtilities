@@ -4,10 +4,10 @@ configs = {
     ("FEB", "Q"):{
         "rocCoreDigital":{
             "reg001elinkSpeed":{
-                "sroc0":0,
-                "sroc1":0,
-                "sroc2":0,
-                "sroc3":0,
+                "sroc0":1,
+                "sroc1":1,
+                "sroc2":1,
+                "sroc3":1,
                 }
             }
         }
