@@ -13,28 +13,28 @@ l_board_A12 = {
 	"sL1Q1":"linkId == 44032 || linkId == 44033",
 	"sL1Q2":"linkId == 44040",
 	"sL1Q3":"linkId == 44048",
-	"pL1Q1":"linkId == 11264",
+	"pL1Q1":"linkId == 11264 || linkId == 11265",
 	"pL1Q2":"linkId == 11272",
 	"pL1Q3":"linkId == 11280",
 
 	"sL2Q1":"linkId == 44160 || linkId == 44161",
 	"sL2Q2":"linkId == 44168",
 	"sL2Q3":"linkId == 44176",
-	"pL2Q1":"linkId == 11392",
+	"pL2Q1":"linkId == 11392 || linkId == 11393",
 	"pL2Q2":"linkId == 11400",
 	"pL2Q3":"linkId == 11408",
 
 	"sL3Q1":"linkId == 44288 || linkId == 44289",
 	"sL3Q2":"linkId == 44296",
 	"sL3Q3":"linkId == 44304",
-	"pL3Q1":"linkId == 11520",
+	"pL3Q1":"linkId == 11520 || linkId == 11521",
 	"pL3Q2":"linkId == 11528",
 	"pL3Q3":"linkId == 11536",
 
 	"sL4Q1":"linkId == 44416 || linkId == 44417",
 	"sL4Q2":"linkId == 44424",
 	"sL4Q3":"linkId == 44432",
-	"pL4Q1":"linkId == 11648",
+	"pL4Q1":"linkId == 11648 || linkId == 11649",
 	"pL4Q2":"linkId == 11656",
 	"pL4Q3":"linkId == 11664",
 
@@ -45,33 +45,35 @@ l_board_A12 = {
 	"sL5Q1":"linkId == 44544 || linkId == 44545",
 	"sL5Q2":"linkId == 44552",
 	"sL5Q3":"linkId == 44560",
-	"pL5Q1":"linkId == 11776",
+	"pL5Q1":"linkId == 11776 || linkId == 11777",
 	"pL5Q2":"linkId == 11784",
 	"pL5Q3":"linkId == 11792",
 
 	"sL6Q1":"linkId == 44672 || linkId == 44673",
 	"sL6Q2":"linkId == 44680",
 	"sL6Q3":"linkId == 44688",
-	"pL6Q1":"linkId == 11904",
+	"pL6Q1":"linkId == 11904 || linkId == 11905",
 	"pL6Q2":"linkId == 11912",
 	"pL6Q3":"linkId == 11920",
 
 	"sL7Q1":"linkId == 44800 || linkId == 44801",
 	"sL7Q2":"linkId == 44808",
 	"sL7Q3":"linkId == 44816",
-	"pL7Q1":"linkId == 12032",
+	"pL7Q1":"linkId == 12032 || linkId == 12033",
 	"pL7Q2":"linkId == 12040",
 	"pL7Q3":"linkId == 12048",
 
 	"sL8Q1":"linkId == 44928 || linkId == 44929",
 	"sL8Q2":"linkId == 44936",
 	"sL8Q3":"linkId == 44944",
-	"pL8Q1":"linkId == 12160",
+	"pL8Q1":"linkId == 12160 || linkId == 12161",
 	"pL8Q2":"linkId == 12168",
 	"pL8Q3":"linkId == 12176",
 }
 
 l_board_A14 = {}
+l_board_A10 = {}
+l_board_A08 = {}
 
 
 
@@ -80,7 +82,9 @@ l_board_A14 = {}
 for board, links in l_board_A12.items():
     # if "pL1" not in board: continue
     for l_b, offset in [
-            (l_board_A14, 2048)
+            (l_board_A14, 2048),
+            (l_board_A10, -2048),
+            (l_board_A08, -2048 * 2)
             ]:
         newlinks = []
         for link in links.split("||"):
@@ -90,15 +94,16 @@ for board, links in l_board_A12.items():
 
 
 
-l_board = l_board_A14
+# the board to run on
+l_board = l_board_A08
 
 
 
 
 
 
-print l_board_A12
-print l_board
+#  print l_board_A12
+#  print l_board
 
 #  exit()
 
@@ -131,7 +136,7 @@ R.gInterpreter.Declare(vmmmap_code)
 
 do = do.Define("vmmidNew", 'vmmmap( vmmid )')
 
-full_dir = rundir + "/" + fn[:-5] + "/"
+full_dir = rundir + "/" + os.path.basename(fn[:-5]) + "/"
 os.system("mkdir -p " + full_dir)
 
 l_histo = []
