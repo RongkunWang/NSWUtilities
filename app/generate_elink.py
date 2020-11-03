@@ -15,6 +15,8 @@ def fun(flxid, card, l_links, phase = 1):
             all_elinks = [11, 19, 25, 33]
         if phase == 3:
             all_elinks = [11, 19, 27, 35]
+        if phase == 4:
+            all_elinks = [9, 17, 25, 33]
         for i in all_elinks:
             l_elink_flx.append( card * 2 ** 11 + link * 2**6 + i)
             l_elink.append(     flxid * 2**16 + card * 2 ** 11 + link * 2**6 + i)
@@ -46,4 +48,5 @@ def fun(flxid, card, l_links, phase = 1):
 #  fun(1, 1, [6, 7, 9, 10], 2)
 #  fun(1, 3, range(4) + range(6, 10), 2)
 
-fun(0, 0, range(12),     3)
+#  fun(0, 0, range(12),     3)
+fun(0, 0, range(12),     4)

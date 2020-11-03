@@ -201,6 +201,28 @@ sTGC_boards_VS = [
             ("{side}{sector}IP_L4Q{quad}sFEB", [(flxid, 0, 22),  (flxid, 0, 23)]), 
         ]
 
+flxid = 5
+sTGC_boards_191_LS = [
+            # name pattern, card and link for gbtx1 (gbtx2 if there is):
+            # ignore gbtx2 for now
+            ("{side}{sector}IP_L1Q{quad}sFEB", [(flxid, 2, 0),  (flxid, 2, 12)]), 
+            ("{side}{sector}IP_L1Q{quad}pFEB", [(flxid, 2, 6)]), 
+            ("{side}{sector}IP_L2Q{quad}sFEB", [(flxid, 2, 7),  (flxid, 2, 18)]), 
+            ("{side}{sector}IP_L2Q{quad}pFEB", [(flxid, 2, 1)]), 
+            ("{side}{sector}IP_L3Q{quad}sFEB", [(flxid, 2, 2),  (flxid, 2, 13)]), 
+            ("{side}{sector}IP_L3Q{quad}pFEB", [(flxid, 2, 8)]), 
+            ("{side}{sector}IP_L4Q{quad}sFEB", [(flxid, 2, 9),  (flxid, 2, 19)]), 
+            ("{side}{sector}IP_L4Q{quad}pFEB", [(flxid, 2, 3)]), 
+            ("{side}{sector}HO_L1Q{quad}sFEB", [(flxid, 2, 4),  (flxid, 2, 14)]), 
+            ("{side}{sector}HO_L1Q{quad}pFEB", [(flxid, 2, 10)]), 
+            ("{side}{sector}HO_L2Q{quad}sFEB", [(flxid, 2, 11), (flxid, 2, 20)]), 
+            ("{side}{sector}HO_L2Q{quad}pFEB", [(flxid, 2, 5)]), 
+            ("{side}{sector}HO_L3Q{quad}sFEB", [(flxid, 0, 12), (flxid, 2, 15)]), 
+            ("{side}{sector}HO_L3Q{quad}pFEB", [(flxid, 0, 13)]), 
+            ("{side}{sector}HO_L4Q{quad}sFEB", [(flxid, 0, 16), (flxid, 2, 21)]), 
+            ("{side}{sector}HO_L4Q{quad}pFEB", [(flxid, 0, 15)]), 
+            ]
+
 d_opt = {
         "side":    "A",
         "sector":  10,
