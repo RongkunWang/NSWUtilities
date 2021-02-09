@@ -16,6 +16,19 @@
 import os, time, math
 import subprocess
 
+def green(*l):
+    return ansi_color(32, *l)
+
+def red(*l):
+    return ansi_color(31, *l)
+
+def ansi_color(color, *l):
+    out = "\033[{0}m".format(color)
+    for a in l:
+        out += str(a) + " " 
+    out += "\033[0m"
+    return out
+
 dict_rate = {
         0:  "00",
         80: "15",
@@ -36,12 +49,18 @@ phase_mode = {
 
 def timeout_run(*arg, **kwargs):
     try:
+        print("going to run: {0}".format(" ".join(arg[0])))
+    except e:
+        print("WARNING: this command is a bit weird.")
+
+    try:
         # fine tuning
-        subprocess.run(*arg, **kwargs, timeout = 3)
+        return subprocess.run(*arg, **kwargs, timeout = 3)
     except subprocess.TimeoutExpired:
         print("WARNING! Timeout the process! Shouldn't affect uploaded values")
     except e:
         print("unexpected exception", sys.exc_info()[0])
+
 
 class GBTXConfigHandler():
     def __init__(self, tp, val, _flx_card, _fiberNo, _ICaddr, hostname="", dir="GBTXconfigs"):
@@ -57,7 +76,27 @@ class GBTXConfigHandler():
         self.not_inspect = False
         self.hostname = hostname
         self.do_one_by_one = False
-      
+        self.turn_off = True
+
+        self.gbtx_exe = "/afs/cern.ch/user/p/ptzanis/public/ScaSoftware/build/Demonstrators/GbtxConfiguration/gbtx_configuration"
+        self.gbtx_exe_kwargs = {}
+
+        self.channel_bit = {
+                0:"07",
+                1:"01",
+                2:"01",
+                3:"01",
+                4:"01",
+                }
+        self.mask_group = [
+                # (391, 0x07),
+                (392, 0x01),
+                (393, 0x01),
+                (394, 0x01),
+                (395, 0x01),
+                # EC
+                #  (398, 0x10),
+                ]
 
         os.system("mkdir -p {0}".format(dir))
 
@@ -96,6 +135,50 @@ class GBTXConfigHandler():
             pass
         pass
 
+    def do_not_turn_off(self):
+        self.turn_off = False
+
+    def setI2CExe(self, in_exe, **kwargs):
+        self.gbtx_exe = in_exe
+        self.gbtx_exe_kwargs = kwargs
+
+    def set_MM(self):
+        self.channel_bit = {
+                0:"ff",
+                1:"ff",
+                2:"ff",
+                3:"ff",
+                4:"ff",
+                }
+        # TODO: confirm this check work
+        self.mask_group = [
+                # (391, 0x07),
+                (392, 0x75),
+                (393, 0x11),
+                (394, 0x11),
+                (395, 0x11),
+                # EC
+                #  (398, 0x10),
+                ]
+
+    def set_sTGC_640(self):
+        self.channel_bit = {
+                0:"07",
+                1:"11",
+                2:"11",
+                3:"11",
+                4:"11",
+                }
+        self.mask_group = [
+                # (391, 0x07),
+                (392, 0x11),
+                (393, 0x11),
+                (394, 0x11),
+                (395, 0x11),
+                # EC
+                #  (398, 0x10),
+                ]
+
     def overwrite_gbtx2(self):
         if self.ICaddr == 2:
             # watchdog timer
@@ -129,8 +212,24 @@ class GBTXConfigHandler():
     def get_reg(self, reg):
         return self.reg[reg]
 
+    def upload_single_phase(self, gr, ch, val):
+        """
+        read from felix into a file then into memory, then modify the phase manually
+        input: int, int, str
+        """
+        self.read_config()
+        self.read_phase()
+        #  self.upload_single( 62, phase_mode["static"] )
+        for arg in self.set_phase(gr, ch, val):
+            print(arg)
+            #  self.upload_single( *arg )
+
     def set_phase(self, gr, ch, val):
-        # val is form 
+        """
+        input: int, int, str
+        """
+
+        # val is form of single-byte two-hex words
         ch_base = 66 + gr * 24
         for this_reg in [
                 ch_base + (3 - math.floor(ch / 2)),
@@ -145,11 +244,15 @@ class GBTXConfigHandler():
             else:
                 self.reg[this_reg] = val + new[1]
             #  print(self.reg[this_reg])
+            yield (this_reg, self.reg[this_reg])
             pass
+        pass
         #  self.reg[]
 
-
-    def read_phase(self):
+    def read_file(self):
+        """
+        read all the config from a file and generate a handler
+        """
         print("===> read phase from {0}".format(self.read_file_name))
         try:
             f = open(self.read_file_name)
@@ -157,7 +260,33 @@ class GBTXConfigHandler():
             exit("ERROR: you didn't run the automatic phase training yet. Please do it after roc is configured.")
 
         con_r = GBTXConfigHandler("read_file", f, self.flx_card, self.fiberNo, self.ICaddr)
+        f.close()
+        print(con_r.reg)
+        return con_r
 
+        pass
+
+    def print_phase(self):
+        self.read_config()
+        con_r = self.read_file()
+        if len(con_r.reg) == 0:
+            print("nothing in the registers")
+            return
+        for group in range(1, 5):
+            print("channel 7-0, group {0}".format(group))
+            for iregr in range(402, 398, -1):
+                print("Phases are {0}".format(con_r.reg[iregr + group * 4]))
+                pass
+            print()
+            pass
+        pass
+
+
+    def read_phase(self):
+        """
+        read from the readback file and set the registers to current phase
+        """
+        con_r = self.read_file()
         if len(con_r.reg) == 0:
             return self.read_file_name
         else:
@@ -260,7 +389,7 @@ class GBTXConfigHandler():
 
     def read_config(self, val=0):
         """
-        read the current config to a file
+        read the current config from FELIX to a file
         """
         try:
             f = open(self.read_file_name, "w")
@@ -285,13 +414,13 @@ class GBTXConfigHandler():
             # need to use I2c
             # at least need to config it (through this 
             #   or by connecting fiber, which is not feasible in run-3 because lack of felix)
-            timeout_run(["/afs/cern.ch/user/p/ptzanis/public/ScaSoftware/build/Demonstrators/GbtxConfiguration/gbtx_configuration",
+            timeout_run([self.gbtx_exe, 
                 "--address",
                 "simple-netio://direct/{0}".format(self.hostname),
                 "-i", "1",
                 "-d", str(self.flx_card),
                 "-r"
-                ])
+                ], **self.gbtx_exe_kwargs)
 
         f.close()
 
@@ -340,18 +469,13 @@ class GBTXConfigHandler():
             # need to use I2c
             # at least need to config it (through this 
             #   or by connecting fiber, which is not feasible in run-3 because lack of felix)
-            timeout_run(["/afs/cern.ch/user/p/ptzanis/public/ScaSoftware/build/Demonstrators/GbtxConfiguration/gbtx_configuration",
+            timeout_run([self.gbtx_exe,
                 "--address",
                 "simple-netio://direct/{0}".format(self.hostname),
                 "-i", "1",
                 "-d", str(self.flx_card),
                 "-w", str(self.write_file_name)
-                ])
-
-            #  os.system("/afs/cern.ch/user/p/ptzanis/public/ScaSoftware/build/Demonstrators/GbtxConfiguration/gbtx_configuration --address simple-netio://direct/{0} -i 1 -d {1} -w {2}".format(
-                #  self.hostname,
-                #  self.flx_card, 
-                #  self.write_file_name))
+                ], **self.gbtx_exe_kwargs)
 
             time.sleep(1)
             pass
@@ -362,16 +486,37 @@ class GBTXConfigHandler():
         # according to gbtx manual 41, #
         # better set to bb 0b, not dd 0d
         # TODO: check if it's the case
-        self.reg[64] = "bb"
-        self.reg[65] = "0b"
-        self.reg[88] = "bb"
-        self.reg[89] = "0b"
-        self.reg[112] = "bb"
-        self.reg[113] = "0b"
-        self.reg[136] = "bb"
-        self.reg[137] = "0b"
-        self.reg[160] = "bb"
-        self.reg[161] = "0b"
+        #  self.reg[64] = "bb"
+        #  self.reg[65] = "0b"
+
+
+
+        for i in [88,
+                112,
+                136,
+                160,
+                ]:
+            self.reg[ i ] = "bb"
+            self.reg[i+i] = "0b"
+
+            #  self.upload_single(i, "bb")
+            #  self.upload_single(i+1, "0b")
+
+            #  self.upload_single(i+1, "7d")
+            #  self.upload_single(i+1, "0d")
+        #  self.upload_config()
+
+        #  self.reg[88] = "bb"
+        #  self.reg[89] = "0b"
+
+        #  self.reg[112] = "bb"
+        #  self.reg[113] = "0b"
+
+        #  self.reg[136] = "bb"
+        #  self.reg[137] = "0b"
+
+        #  self.reg[160] = "bb"
+        #  self.reg[161] = "0b"
         # group 5-6
         #  self.reg[184] = phase_mode["bb"],
         #  self.reg[185] = phase_mode["0b"],
@@ -395,46 +540,36 @@ class GBTXConfigHandler():
     def pa_train(self, on=True):
         # do not do for group 0 (sca)
         #  group0 = [ 78, 79, 80 ]
-        group0 = [  ]
-        group_other = [
-                102, 103, 104,
-                126, 127, 128,
-                150, 151, 152,
-                ]
-        group4 = [
-                174, 175, 176,
-                ]
+        groups = [1, 2, 3, 4]
+        group_base = [78, 79, 80]
+        #  group_other = [
+                #  102, 103, 104,
+                #  126, 127, 128,
+                #  150, 151, 152,
+                #  174, 175, 176,
+                #  ]
         # do not do for EC (sca)
         #  group_EC = [ 245 ]
         group_EC = [  ]
 
-
         if self.do_one_by_one and self.ICaddr != 2:
             # a bit deprecated.. don't use
             if on:
-                self.reg[62] = phase_mode["training"]
                 # do reset cycle, too
                 # +6 is reset
-                for ireg in group0: 
-                    self.upload_single(ireg,   "07")
-                for ireg in group0: 
-                    self.upload_single(ireg+6, "07")
-                for ireg in group0: 
-                    self.upload_single(ireg+6, "00")
-
-                for ireg in group_other:
-                    self.upload_single(ireg  , "01")
-                for ireg in group_other:
-                    self.upload_single(ireg+6, "01")
-                for ireg in group_other:
-                    self.upload_single(ireg+6, "00")
-
-                for ireg in group4:
-                    self.upload_single(ireg  , "01")
-                for ireg in group4:
-                    self.upload_single(ireg+6, "01")
-                for ireg in group4:
-                    self.upload_single(ireg+6, "00")
+                # DEBUG send like this?
+                self.upload_single(62, phase_mode["training"])
+                for egrp in groups:
+                    for base in group_base:
+                        self.upload_single(base + 24 * egrp, self.channel_bit[egrp])
+                    for base in group_base:
+                        self.upload_single(base + 24 * egrp + 6, self.channel_bit[egrp])
+                    for base in group_base:
+                        self.upload_single(base + 24 * egrp + 6, "00")
+                    if self.turn_off:
+                        for base in group_base:
+                            self.upload_single(base + 24 * egrp, "00")
+                            pass
 
                 for ireg in group_EC:
                     self.upload_single(ireg  , "08")
@@ -443,20 +578,18 @@ class GBTXConfigHandler():
                 for ireg in group_EC:
                     self.upload_single(ireg+6, "00")
             else:
-                for ireg in group_other + group0:
-                    self.upload_single(ireg, "00")
+                pass
+                #  for base in group_base:
+                    #  for egrp in groups:
+                        #  self.upload_single(base + 24 * egrp, "00")
         else:
+            self.write_reg(62, phase_mode["training"])
             if on:
                 # do reset cycle, too
                 # +6 is reset
-                for ireg in group0: 
-                    self.write_reg(ireg,   "07")
-                for ireg in group_other:
-                    #  self.write_reg(ireg  , "11")
-                    self.write_reg(ireg  , "01")
-                for ireg in group4:
-                    #  self.write_reg(ireg  , "13")
-                    self.write_reg(ireg  , "01")
+                for base in group_base:
+                    for egrp in groups:
+                        self.write_reg(base + 24 * egrp, self.channel_bit[egrp])
                 for ireg in group_EC:
                     self.write_reg(ireg  , "08")
                 # TODO: test if this is necessary? (save time)
@@ -465,30 +598,23 @@ class GBTXConfigHandler():
                 #  self.upload_config()
 
                 # TODO: try train only channel 0?
-                for ireg in group0: 
-                    self.write_reg(ireg+6, "07")
-                for ireg in group_other:
-                    #  self.write_reg(ireg+6, "11")
-                    self.write_reg(ireg+6, "01")
-                for ireg in group4:
-                    #  self.write_reg(ireg+6, "13")
-                    self.write_reg(ireg+6, "01")
+                for base in group_base:
+                    for egrp in groups:
+                        self.write_reg(base + 24 * egrp + 6, self.channel_bit[egrp])
                 for ireg in group_EC:
                     self.write_reg(ireg+6, "08")
                 self.upload_config()
 
-                for ireg in group0: 
-                    self.write_reg(ireg+6, "00")
-                for ireg in group_other:
-                    self.write_reg(ireg+6, "00")
-                for ireg in group4:
-                    self.write_reg(ireg+6, "00")
+                for base in group_base:
+                    for egrp in groups:
+                        self.write_reg(base + 24 * egrp + 6, "00")
                 for ireg in group_EC:
                     self.write_reg(ireg+6, "00")
                 self.upload_config()
             else:
-                for ireg in group_other + group0 + group4 + group_EC:
-                    self.write_reg(ireg, "00")
+                for base in group_base:
+                    for egrp in groups:
+                        self.write_reg(base + 24 * egrp, "00")
                 self.upload_config()
                 
         pass
@@ -503,14 +629,15 @@ class GBTXConfigHandler():
             #  # what to do if else?
             #  self.inspect_lock()
         # turn off..
-        self.pa_train(False)
+        if self.turn_off:
+            self.pa_train(False)
 
         if not self.not_inspect:
             # well, check again?
             print("====> INSPECT after train off")
             is_locked = self.inspect_lock()
             if is_locked:
-                print("everything is locked")
+                print(green("everything is locked"))
             return is_locked
         else:
             return True
@@ -519,31 +646,35 @@ class GBTXConfigHandler():
     def inspect_lock(self):
         locked = True
         print("inspecting flx-card {0}, fiber {1},  ICaddr {2}".format(self.flx_card, self.fiberNo, self.ICaddr) )
-        for reg, mask in [
+        to_check = [
 
                 # to check group 0-4
                 # (390, 0x1f),
                 # to check group 0-4 and EC
                 # (390, 0x9f),
-                # to check group 1-4
                 (390, 0x1e),
+                # to check group 1-4
+                ] + self.mask_group
+        for reg, mask in to_check:
 
-                # (391, 0x07),
-                (392, 0x01),
-                (393, 0x01),
-                (394, 0x01),
-                (395, 0x01),
-                # EC
-                #  (398, 0x10),
-                ]:
             out = ""
-            p = subprocess.Popen( ["fice", "-G", str(self.fiberNo), "-I", str(self.ICaddr), "-d", str(self.flx_card), 
-                    "-a", str(reg)],
-                    stdout=subprocess.PIPE )
+            # TODO: see if this works
+            p = timeout_run(["fice",
+                "-G", str(self.fiberNo),
+                "-I", str(self.ICaddr),
+                "-d", str(self.flx_card),
+                "-a", str(reg)],
+                stdout=subprocess.PIPE )
+            #  p = subprocess.Popen( ["fice", "-G", str(self.fiberNo), "-I", str(self.ICaddr), "-d", str(self.flx_card), 
+                    #  "-a", str(reg)],
+                    #  stdout=subprocess.PIPE )
             time.sleep(0.5)
+            if not p: 
+                continue
 
             found = False
-            for line in iter(p.stdout.readline, b''):
+            for line in p.stdout.split(b'\n'):
+            #  for line in iter(p.stdout.readline, b''):
                 if b"Reply" in line:
                     found = True
                 elif found:
@@ -554,21 +685,26 @@ class GBTXConfigHandler():
             try:
                 val = int(out, 16)
             except:
-                print("ERROR: something wrong with this link")
+                print(red("ERROR: something wrong with this link data: {0}".format(out)))
                 return False
 
             if (val & mask) != mask:
-                series = "{0:#07b}".format(mask - (val & mask))[:1:-1]
+                channel_check = "{0:08b}".format(mask)
+                #  series = "{0:08b}".format(mask - (val & mask))[::-1]
+                #  print(series)
+                # reverse
+                series = "{0:08b}".format(val & mask)[::-1]
+                print(reg, channel_check)
                 print(reg, val, series)
                 for i in range(len(series)):
-                    if series[i] == "0":
-                        continue
+                    if channel_check[i] == "0": continue
+                    if series[i] == "1": continue
                     locked = False
                     if reg == 390:
-                        print("Group {0} not locked. Group 7 means EC".format(i))
+                        print(red("Group {0} not locked. Group 7 means EC".format(i)))
                     elif reg == 398:
-                        print("EC channel not locked:")
+                        print(red("EC channel not locked:"))
                     else:
-                        print("Group {0} channel {1}"" not locked".format(reg - 391, i))
+                        print(red("Group {0} channel {1}"" not locked".format(reg - 391, 7 - i)))
 
         return locked
