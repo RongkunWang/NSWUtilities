@@ -70,24 +70,28 @@ from GBTxConfig.GBTXConfigHandler import *
 
 l_gbtxn = [
         #  (0, 1, 0),
-        (1, 1, 0),
-        #  (2, 1, 0),
+        #  (1, 1, 0),
         #  (3, 1, 0),
         #  (4, 1, 0),
         #  (5, 1, 0),
         #  (6, 1, 0),
         #  (7, 1, 0),
-        #  (1, 2, 0, ""),
-        #  (2, 1, 0),
-        #  (3, 2, 0, ""),
+        #  (8, 1, 0),
+        #  (9, 1, 0),
+        (10, 1, 0),
+        #  (11, 1, 0),
 
-        # sL1
-        (0, 2, 2, "pcatlnswfelix05.cern.ch/12340/12350/5003f"),
+
+        #  (6, 1, 1),
+        #  (7, 1, 1),
+        #  (8, 1, 1),
+        #  (9, 1, 1),
+        #  (10, 1, 1),
         ]
 
 # group 0-4 rate selection, subject to flx fmw and technology used
-g0_rate = 320
-g1_rate = 320
+g0_rate = 80
+g1_rate = 80
 g2_rate = 320
 g3_rate = 320
 g4_rate = 320
@@ -149,6 +153,7 @@ for arg_tuple in l_gbtxn:
 
     con = GBTXConfigHandler("write_list", l_words, 
             flx_card, fiberNo, ICaddr, hostname)
+    con.set_MM()
     con.DoOneByOne()
     
 
@@ -173,8 +178,8 @@ for arg_tuple in l_gbtxn:
         self.upload_single_phase( *l_arg )
     elif args.train:
         # first upload the very first config with IC
-        print(mpsu.green("===> upload all config"))
-        con.upload_config()
+        #  print(mpsu.green("===> upload all config"))
+        #  con.upload_config()
 
         # do the training! or just checking directly!
         if not con.train_phases():
