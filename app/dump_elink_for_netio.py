@@ -5,10 +5,12 @@ def shift_flxid(i, id = 0):
     return i + id * 2**16
 
 #  FLXID = 6
-FLXID = 12
+#  FLXID = 12
+FLXID = 8
 
 #  dic = ElinkDict.MMElinkDict_191_A16
-dic = ElinkDict.MMElinkDict_191
+#  dic = ElinkDict.MMElinkDict_191
+dic = ElinkDict.sTGCElinkDict
 
 for i in dic.keys():
     if i < 2048:

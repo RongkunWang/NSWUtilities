@@ -11,6 +11,7 @@ list_arg = [
         "sTGC_GBTx2_320",
         "sTGC_pQ1_split",
         "sTGC_640",
+        "sTGC_SFEB6_roc",
         ]
 
 import argparse

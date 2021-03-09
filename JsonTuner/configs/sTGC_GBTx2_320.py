@@ -1,12 +1,16 @@
 configs = {
-    ("SFEB", "Q1"):{
+    ("", ""):{
         "rocCoreDigital":{
             "reg001elinkSpeed":{
                 "sroc0":1,
                 "sroc1":1,
                 "sroc2":1,
                 "sroc3":1, 
-                }, 
+                }
+            }
+        },
+    ("SFEB", "Q1"):{
+        "rocCoreDigital":{
             "reg002sRoc0VmmConnections":{
                 "vmm0": 1,
                 "vmm1": 1,
@@ -51,12 +55,6 @@ configs = {
         }, 
     ("SFEB", "Q2"):{
             "rocCoreDigital":{
-                "reg001elinkSpeed":{
-                    "sroc0":1,
-                    "sroc1":1,
-                    "sroc2":1,
-                    "sroc3":1, 
-                    }, 
                 "reg002sRoc0VmmConnections":{
                     "vmm0": 1,
                     "vmm1": 1,
@@ -101,12 +99,6 @@ configs = {
             }, 
     ("SFEB", "Q3"):{
             "rocCoreDigital":{
-                "reg001elinkSpeed":{
-                    "sroc0":1,
-                    "sroc1":1,
-                    "sroc2":1,
-                    "sroc3":1, 
-                    }, 
                 "reg002sRoc0VmmConnections":{ 
                     "vmm0": 1, 
                     "vmm1": 1, 
@@ -151,12 +143,6 @@ configs = {
             },
         ("PFEB", "Q1"): {
             "rocCoreDigital":{
-                "reg001elinkSpeed":{
-                    "sroc0":0,
-                    "sroc1":0,
-                    "sroc2":0,
-                    "sroc3":0, 
-                    }, 
                 "reg002sRoc0VmmConnections":{ 
                     "vmm0": 1, 
                     "vmm1": 0, 
