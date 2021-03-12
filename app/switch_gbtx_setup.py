@@ -66,7 +66,6 @@ if __name__ == "__main__":
 
     this_input = options.input
     for setup in options.setup.split(","):
-
         conf = BoardObj(this_input)
         for bd in conf.boards:
             for board_key, dict_apply in dict_apply_summary[setup].items():
@@ -78,7 +77,7 @@ if __name__ == "__main__":
                     pass # loop over all keywords
                 if switch:
                     conf.apply_one_board(bd, dict_apply)
-                    break
+                    continue
                 pass # loop over settings, see if this apply this board
             pass # loop over boards
         conf.dump(options.output)
