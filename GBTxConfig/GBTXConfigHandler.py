@@ -78,7 +78,16 @@ class GBTXConfigHandler():
         self.do_one_by_one = False
         self.turn_off = True
 
-        self.gbtx_exe = "/afs/cern.ch/user/p/ptzanis/public/ScaSoftware/build/Demonstrators/GbtxConfiguration/gbtx_configuration"
+        if os.environ["HOSTNAME"] in [
+                "um-felix1", 
+                "um-felix1.cern.ch", 
+                "um-felix2", 
+                "um-felix2.cern.ch",
+                ]:
+            print(os.environ["HOSTNAME"])
+            self.gbtx_exe = "/afs/cern.ch/user/p/ptzanis/public/ScaSoftware/build/Demonstrators/GbtxConfiguration/gbtx_configuration"
+        else:
+            self.gbtx_exe = "/afs/cern.ch/work/n/nswdaq/public/ScaSoftware/installed/bin/gbtx_configuration"
         self.gbtx_exe_kwargs = {}
 
         self.channel_bit = {

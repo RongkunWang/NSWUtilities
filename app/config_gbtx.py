@@ -29,6 +29,12 @@ previous versions:
 Author: Rongkun Wang  <rongkun.wang at cern.ch>
 """
 
+import sys
+indexes = []
+for i, lib in enumerate(sys.path):
+    if "/opt/felix" in lib: indexes.append(i)
+for i in sorted(indexes, reverse=True):
+    del sys.path[i]
 import argparse
 
 parser = argparse.ArgumentParser(description='Config gbtx.')
