@@ -61,11 +61,10 @@ def timeout_run(*arg, **kwargs):
     except e:
         print("unexpected exception", sys.exc_info()[0])
 
-
 class GBTXConfigHandler():
     def __init__(self, tp, val, _flx_card, _fiberNo, _ICaddr, hostname="", dir="GBTXconfigs"):
         """
-        tp: 
+        tp can be: 
             write_list: val is a list for writing and uploading
             read_file:  val is a file with readback data
         """
@@ -84,7 +83,7 @@ class GBTXConfigHandler():
                 "um-felix2", 
                 "um-felix2.cern.ch",
                 ]:
-            print(os.environ["HOSTNAME"])
+            #  print(os.environ["HOSTNAME"])
             self.gbtx_exe = "/afs/cern.ch/user/p/ptzanis/public/ScaSoftware/build/Demonstrators/GbtxConfiguration/gbtx_configuration"
         else:
             self.gbtx_exe = "/afs/cern.ch/work/n/nswdaq/public/ScaSoftware/installed/bin/gbtx_configuration"
@@ -678,17 +677,15 @@ class GBTXConfigHandler():
                     #  "-a", str(reg)],
                     #  stdout=subprocess.PIPE )
             time.sleep(0.5)
-            if not p: 
-                continue
 
             found = False
-            for line in p.stdout.split(b'\n'):
-            #  for line in iter(p.stdout.readline, b''):
-                if b"Reply" in line:
-                    found = True
-                elif found:
-                    out = line.rstrip().split(b":")[1]
-                    break
+            if p:
+                for line in p.stdout.split(b'\n'):
+                    if b"Reply" in line:
+                        found = True
+                    elif found:
+                        out = line.rstrip().split(b":")[1]
+                        break
 
             #  print out
             try:

@@ -12,13 +12,37 @@ import copy
 def is_dict(a):
     return isinstance(a, dict)
 
+
+def modify_dict(uni, com):
+    """
+    takes two dictionaries uni, com.
+    return a dictionary that has all the elements in com,
+    will modify the content of where the key exist in uni
+    """
+    dout = copy.deepcopy(com)
+    print()
+    print(uni)
+    for key, val in uni.items():
+        if key not in com: continue
+        if type(val) == type(tuple()): 
+            dout[key] = dout[key].replace(val[0], val[1])
+        else:
+            dout[key] = modify_dict(val, dout[key])
+    return dout
+
 def merge_dict(uni, com):
     """ 
     takes two dictionaries uni, com.
     return a dictionary that has all the elements in com,
-        with elements from uni when it's different from com
+        with elements from uni when it's different from com, or if com doesn't have it
     """
     dout = {}
+    for key, value in uni.items():
+        if key not in com:
+            dout[key] = copy.deepcopy(value)
+            pass
+        pass
+
     for key, value in com.items():
         if key not in uni:
             dout[key] = copy.deepcopy(value)

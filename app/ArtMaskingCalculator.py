@@ -135,6 +135,11 @@ if __name__ == "__main__":
             help="pass in board,vmmid and the ADDC,art,register,value will be returned.",
             required=True,
             nargs="+")
+    parser.add_argument("-a", "--art", dest="type", action="store_const",
+            const = "ArtMask")
+    parser.add_argument("-d", "--decode", dest="type", action="store_const",
+            const = "SimpleDecode")
+
     opts = parser.parse_args()
     iterators = None
     try:
@@ -144,5 +149,8 @@ if __name__ == "__main__":
     for name, vmmid in iterators:
         brd_name = name_converter(name)
         print(brd_name)
-        print(art_register_mask(brd_name, vmmid))
+        if opts.type == "ArtMask":
+            print(art_register_mask(brd_name, vmmid))
+        if opts.type == "SimpleDecode":
+            print(name_decoder(brd_name))
     pass

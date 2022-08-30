@@ -7,6 +7,7 @@ hard-coded implementation of setting
 #  from __future__ import absolute_import
 
 list_arg = [
+        "MMG_Trigger",
         "sTGC_all320",
         "sTGC_GBTx2_320",
         "sTGC_pQ1_split",
