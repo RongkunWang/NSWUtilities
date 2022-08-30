@@ -20,8 +20,6 @@ def modify_dict(uni, com):
     will modify the content of where the key exist in uni
     """
     dout = copy.deepcopy(com)
-    print()
-    print(uni)
     for key, val in uni.items():
         if key not in com: continue
         if type(val) == type(tuple()): 

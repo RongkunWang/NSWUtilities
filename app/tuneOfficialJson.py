@@ -57,8 +57,8 @@ for name in list_arg:
         pass
     pass
 
-print(dict_apply_summary["MMG_Trigger"])
-print(dict_modify_summary["MMG_Trigger"])
+#  print(dict_apply_summary["MMG_Trigger"])
+#  print(dict_modify_summary["MMG_Trigger"])
 
 raw_data = {}
 with open(options.input) as fin:
@@ -77,7 +77,7 @@ for bd, val in raw_data.items():
             pass # loop over all keywords for matching
         if switch:
             data[bd] = modify_dict(dict_apply, val)
-            print(data[bd])
+            #  print(data[bd])
         pass
 raw_data = copy.deepcopy(data)
 
