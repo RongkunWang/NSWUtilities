@@ -76,13 +76,23 @@ for bd, val in raw_data.items():
     for board_key, dict_apply in dict_modify_summary[options.setup].items():
         switch = True
         for key in board_key:
-            if key not in bd:
+            if "|" in key:
+                list_of_or = key.split("|")
                 switch = False
-                break
+                for key_in_one_or in list_of_or:
+                    if key_in_one_or in bd:
+                        switch = True
+                        break
+                    pass
+                if not switch:
+                    break
+            else:
+                if key not in bd:
+                    switch = False
+                    break
             pass # loop over all keywords for matching
         if switch:
             data[bd] = modify_dict(dict_apply, val)
-            #  print(data[bd])
         pass
 raw_data = copy.deepcopy(data)
 
@@ -90,9 +100,20 @@ for bd, val in raw_data.items():
     for board_key, dict_apply in dict_apply_summary[options.setup].items():
         switch = True
         for key in board_key:
-            if key not in bd:
+            if "|" in key:
+                list_of_or = key.split("|")
                 switch = False
-                break
+                for key_in_one_or in list_of_or:
+                    if key_in_one_or in bd:
+                        switch = True
+                        break
+                    pass
+                if not switch:
+                    break
+            else:
+                if key not in bd:
+                    switch = False
+                    break
             pass # loop over all keywords for matching
         if switch:
             data[bd] = merge_dict(dict_apply, val)
