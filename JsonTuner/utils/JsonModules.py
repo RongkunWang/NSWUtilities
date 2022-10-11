@@ -17,7 +17,7 @@ def modify_dict(uni, com):
     """
     takes two dictionaries uni, com.
     return a dictionary that has all the elements in com,
-    will modify the content of where the key exist in uni
+    will modify the content by doing a string replacement for keys in uni
     """
     dout = copy.deepcopy(com)
     for key, val in uni.items():

@@ -1,27 +1,32 @@
 #/usr/bin/env python3
 
 configs = { 
-    ("art_common_config", ):{
-        "art_core":{
-            "13":{
-                "cfg_bcid0[7:0]": "133",
-                },
-            "14":{
-                "cfg_bcid0[11:8]": "0",                                                                                                                                             
-                "cfg_bcid1[3:0]": "11"
-                },
-            "15": {
-                "cfg_bcid1[11:4]": "222"
-                },
-
+        ("vmm_common_config"):{
+            "sfam": "1",
             },
-        },
-    ("MMTP", ):{
-        "SkipRegisters" : ["33"],
-        "gloSyncBcidOffset":"94",
-        "gloSyncIdleState":"1"
         }
-    }
+#  configs = { 
+    #  ("art_common_config", ):{
+        #  "art_core":{
+            #  "13":{
+                #  "cfg_bcid0[7:0]": "133",
+                #  },
+            #  "14":{
+                #  "cfg_bcid0[11:8]": "0",                                                                                                                                             
+                #  "cfg_bcid1[3:0]": "11"
+                #  },
+            #  "15": {
+                #  "cfg_bcid1[11:4]": "222"
+                #  },
+
+            #  },
+        #  },
+    #  ("MMTP", ):{
+        #  "SkipRegisters" : ["33"],
+        #  "gloSyncBcidOffset":"94",
+        #  "gloSyncIdleState":"1"
+        #  }
+    #  }
 
 # TODO could use a functionform..
 configsModify = {

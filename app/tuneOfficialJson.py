@@ -15,6 +15,10 @@ list_arg = [
         "sTGC_SFEB6_roc",
         ]
 
+for side in ["A", "C"]:
+    for sector in range(1, 17):
+        list_arg.append(f"{side}{sector:02d}")
+
 import argparse
 class CustomFormatter(argparse.RawDescriptionHelpFormatter, argparse.ArgumentDefaultsHelpFormatter):
     pass
@@ -54,6 +58,7 @@ for name in list_arg:
     try:
         dict_modify_summary[name] = getattr(JsonTuner.configs, name).configsModify
     except:
+        dict_modify_summary[name] = {}
         pass
     pass
 
