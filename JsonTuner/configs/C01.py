@@ -1,7 +1,7 @@
 #/usr/bin/env python3
 
 ROFFSET       = 134
-LOFFSET       = 133
+LOFFSET       = 134
 TPOFFSET      = 91
 TPINPUTOFFSET = 4
 TPINPUTPHASE  = 2

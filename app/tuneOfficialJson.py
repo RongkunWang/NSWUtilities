@@ -6,6 +6,8 @@ hard-coded implementation of setting
 #  from __future__ import division
 #  from __future__ import absolute_import
 
+from NSWConfigJSONEncoder import NSWConfigJSONEncoder
+
 list_arg = [
         "MMG_Trigger",
         "sTGC_all320",
@@ -122,5 +124,9 @@ for bd, val in raw_data.items():
     pass # loop over boards in json
 
 with open(options.output, 'w') as fp:
-    tmp2 = json.dump(data, fp, indent=4, sort_keys = False)
+    tmp2 = json.dump(data, 
+            fp, 
+            indent=4, 
+            sort_keys = False,
+            cls=NSWConfigJSONEncoder)
     fp.close()
