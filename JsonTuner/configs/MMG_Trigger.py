@@ -1,6 +1,9 @@
 #/usr/bin/env python3
 
 configs = { 
+        ("MMTP"):{
+            "ARTWindowCenter" : "",
+            },
         ("vmm_common_config"):{
             "sfam": "1",
             },

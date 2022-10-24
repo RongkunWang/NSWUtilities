@@ -1,10 +1,10 @@
 #/usr/bin/env python3
 
-ROFFSET       = 133
-LOFFSET       = 133
-TPOFFSET      = 91
+ROFFSET = 127
+LOFFSET = 128
+TPOFFSET = 87
 TPINPUTOFFSET = 4
-TPINPUTPHASE  = 3
+TPINPUTPHASE  = 6
 
 configs = { 
         ("art_common_config", ):{

@@ -20,6 +20,8 @@ list_arg = [
 for side in ["A", "C"]:
     for sector in range(1, 17):
         list_arg.append(f"{side}{sector:02d}")
+        list_arg.append(f"{side}{sector:02d}_DownShift4")
+        list_arg.append(f"{side}{sector:02d}_auto")
 
 import argparse
 class CustomFormatter(argparse.RawDescriptionHelpFormatter, argparse.ArgumentDefaultsHelpFormatter):

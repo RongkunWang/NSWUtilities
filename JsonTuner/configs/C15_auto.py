@@ -1,8 +1,7 @@
-#/usr/bin/env python3
 
-ROFFSET       = 133
-LOFFSET       = 133
-TPOFFSET      = 91
+ROFFSET       = 129
+LOFFSET       = 129
+TPOFFSET      = 87
 TPINPUTOFFSET = 4
 TPINPUTPHASE  = 3
 
@@ -39,3 +38,4 @@ if ROFFSET != LOFFSET:
                     },
                 },
             }
+            
