@@ -33,6 +33,7 @@ def merge_dict(uni, com):
     takes two dictionaries uni, com.
     return a dictionary that has all the elements in com,
         with elements from uni when it's different from com, or if com doesn't have it
+        if the content of any uni keyword is an empty dictionary, delete this entire keyword
     """
     dout = {}
     for key, value in uni.items():
@@ -46,9 +47,14 @@ def merge_dict(uni, com):
             dout[key] = copy.deepcopy(value)
             continue
         if is_dict(value):
-            dout[key] = merge_dict(uni[key], com[key])
+            if len(uni[key]) == 0:
+                print("delete", key, uni[key])
+                #  del dout[key]
+            else:
+                dout[key] = merge_dict(uni[key], com[key])
             continue
         if key in uni:
+            # a value
             dout[key] = uni[key]
             pass
         pass

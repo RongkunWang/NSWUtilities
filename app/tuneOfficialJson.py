@@ -104,6 +104,7 @@ for bd, val in raw_data.items():
     for board_key, dict_apply in dict_apply_summary[options.setup].items():
         switch = True
         for key in board_key:
+            # match any keyword
             if "|" in key:
                 list_of_or = key.split("|")
                 switch = False

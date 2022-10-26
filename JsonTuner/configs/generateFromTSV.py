@@ -42,6 +42,15 @@ if ROFFSET != LOFFSET:
                     },
                 },
             }
+else:
+    configs[ ("ADDC", "HOL|IPL")] = {
+            "art0": {
+                "art_core":{}
+                },
+            "art1": {
+                "art_core":{}
+                }
+    }
             """
 
 ifile = open("summary.tsv")
