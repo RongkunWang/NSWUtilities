@@ -1,11 +1,11 @@
 #/usr/bin/env python3
 
 configs = { 
-        ("MMTP"):{
-            "ARTWindowCenter" : "",
-            },
+        #  ("MMTP"):{
+            #  "ARTWindowCenter" : "",
+            #  },
         ("vmm_common_config"):{
-            "sfam": "1",
+            "sfam": "0",
             },
         }
 #  configs = { 
@@ -32,17 +32,17 @@ configs = {
     #  }
 
 # TODO could use a functionform..
-configsModify = {
-    ("MMTP", ):{
-        "OpcNodeId": (".I2C_0.bus0", "")
-        },
-    ("ADDC", ):{
-        "art0": {
-            "OpcNodeId_TP": (".I2C_0.bus0", "")
-            },
-        "art1": {
-            "OpcNodeId_TP": (".I2C_0.bus0", "")
-            },
-        }
-    }
+#  configsModify = {
+    #  ("MMTP", ):{
+        #  "OpcNodeId": (".I2C_0.bus0", "")
+        #  },
+    #  ("ADDC", ):{
+        #  "art0": {
+            #  "OpcNodeId_TP": (".I2C_0.bus0", "")
+            #  },
+        #  "art1": {
+            #  "OpcNodeId_TP": (".I2C_0.bus0", "")
+            #  },
+        #  }
+    #  }
 

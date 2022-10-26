@@ -49,7 +49,6 @@ def merge_dict(uni, com):
         if is_dict(value):
             if len(uni[key]) == 0:
                 print("delete", key, uni[key])
-                #  del dout[key]
             else:
                 dout[key] = merge_dict(uni[key], com[key])
             continue

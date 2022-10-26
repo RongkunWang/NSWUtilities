@@ -1,0 +1,6 @@
+[submodule "official-json-configs"]
+	path = app/official-json-configs
+	url = ssh://git@gitlab.cern.ch:7999/atlas-muon-nsw-daq/infrastructure/official-json-configs.git
+[submodule "app/official-json-configs"]
+	path = app/official-json-configs
+	url = ssh://git@gitlab.cern.ch:7999/atlas-muon-nsw-daq/infrastructure/official-json-configs.git
