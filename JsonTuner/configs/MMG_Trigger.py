@@ -1,9 +1,16 @@
 #/usr/bin/env python3
 
 configs = { 
-        #  ("MMTP"):{
-            #  "ARTWindowCenter" : "",
-            #  },
+        ("MMTP"):{
+            "ARTWindowCenter" : None,
+            "ARTWindowLeft" : None,
+            "ARTWindowRight" : None,
+            "L1AOpeningOffset": 40,
+            "L1ARequestOffset": 32,
+            "L1AClosingOffset": 24,
+            "L1ATimeoutWindow": 64,
+            },
+        #  ("tp_common_config"):{},
         ("vmm_common_config"):{
             "sfam": "0",
             },

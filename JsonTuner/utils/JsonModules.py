@@ -38,6 +38,8 @@ def merge_dict(uni, com):
     dout = {}
     for key, value in uni.items():
         if key not in com:
+            if is_dict(value) and len(value) == 0: 
+                continue
             dout[key] = copy.deepcopy(value)
             pass
         pass
@@ -52,6 +54,10 @@ def merge_dict(uni, com):
             else:
                 dout[key] = merge_dict(uni[key], com[key])
             continue
+        elif not uni[key]: 
+                print("delete", key, value)
+                continue
+
         if key in uni:
             # a value
             dout[key] = uni[key]

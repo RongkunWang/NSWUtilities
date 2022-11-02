@@ -73,6 +73,8 @@ raw_data = {}
 data = {}
 with open(options.input) as fin:
     data = json.load(fin)
+    if "tp_common_config" in data: 
+        del data["tp_common_config"]
     fin.close()
 
 this_input = options.input
