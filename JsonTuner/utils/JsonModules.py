@@ -50,12 +50,12 @@ def merge_dict(uni, com):
             continue
         if is_dict(value):
             if len(uni[key]) == 0:
-                print("delete", key, uni[key])
+                print("delete due to dict size 0", key, uni[key])
             else:
                 dout[key] = merge_dict(uni[key], com[key])
             continue
-        elif not uni[key]: 
-                print("delete", key, value)
+        elif uni[key] == -999: 
+                print("delete due to -999", key, value)
                 continue
 
         if key in uni:

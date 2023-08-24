@@ -2,19 +2,28 @@
 
 configs = { 
         ("MMTP"):{
-            "ARTWindowCenter" : None,
-            "ARTWindowLeft" : None,
-            "ARTWindowRight" : None,
-            "L1AOpeningOffset": 40,
+            #  "ARTWindowCenter" : None,
+            #  "ARTWindowLeft" : None,
+            #  "ARTWindowRight" : None,
+            "L1AOpeningOffset": 33,
             "L1ARequestOffset": 32,
-            "L1AClosingOffset": 24,
+            "L1AClosingOffset": 31,
             "L1ATimeoutWindow": 64,
+            "L1ABusyThreshold": 7,
+            "LocalBcidOffset": 37,
+            #  "gloSyncIdleState": 1,
+            #  "latTxBcidOffset": 100,
+            #  "SelfTriggerDelay": 0,
+            #  "SkipRegisters": [],
             },
         #  ("tp_common_config"):{},
-        ("vmm_common_config"):{
-            "sfam": "0",
-            },
+        # 100ns timing at peak
+        #  ("vmm_common_config"):{
+            #  "sfam": "1",
+            #  "st": "1",
+            #  },
         }
+
 #  configs = { 
     #  ("art_common_config", ):{
         #  "art_core":{
