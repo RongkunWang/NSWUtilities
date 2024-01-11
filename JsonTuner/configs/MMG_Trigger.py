@@ -5,17 +5,21 @@ configs = {
             #  "ARTWindowCenter" : None,
             #  "ARTWindowLeft" : None,
             #  "ARTWindowRight" : None,
-            "L1AOpeningOffset": 33,
-            "L1ARequestOffset": 32,
-            "L1AClosingOffset": 31,
-            "L1ATimeoutWindow": 64,
-            "L1ABusyThreshold": 7,
-            "LocalBcidOffset": 37,
+            #  "L1AClosingOffset": 26,
+            #  "L1ARequestOffset": 32,
+            #  "L1AOpeningOffset": 38,
+            #  "L1ATimeoutWindow": 64,
+            #  "L1ABusyThreshold": 31,
+            #  "LocalBcidOffset": 38,
             #  "gloSyncIdleState": 1,
-            #  "latTxBcidOffset": 100,
+            "latTxBcidOffset": 87,
+            "phiBinInvert": 0,
             #  "SelfTriggerDelay": 0,
             #  "SkipRegisters": [],
             },
+        ("STGCTP"):{
+            "IgnoreMM": False,
+            }
         #  ("tp_common_config"):{},
         # 100ns timing at peak
         #  ("vmm_common_config"):{

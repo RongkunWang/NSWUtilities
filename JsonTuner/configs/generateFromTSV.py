@@ -4,6 +4,7 @@ template_special = """
 ROFFSET       = {ROFFSET}
 LOFFSET       = {LOFFSET}
 TPOFFSET      = {TPOFFSET(gloSyncBcidOffset)}
+SEGMENTADJUST      = {SegmentAdjust}
 TPINPUTPHASE  = {GlobalInputPhase}
 TPINPUTOFFSET = {GlobalInputOffset}
 TPINPUTL1PHASE   = {gbtL1ddPhaseOffset}
@@ -24,6 +25,7 @@ configs = {
             },
         ("MMTP", ):{
             "gloSyncBcidOffset": TPOFFSET,
+            "SegmentAdjust": SEGMENTADJUST,
             "GlobalInputOffset": TPINPUTOFFSET,
             "GlobalInputPhase":  TPINPUTPHASE,
             "gbtL1ddPhaseOffset": TPINPUTL1PHASE,
