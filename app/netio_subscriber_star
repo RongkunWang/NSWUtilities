@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+source /det/nsw/felix-configuration/felix_setup.sh
+/atlas-home/1/rowang/NSW/utilities/netio_subscriber_star.py $@

@@ -11,11 +11,14 @@ with open(sys.argv[1]) as f:
     d = json.load(f)
     mmtp_ori = d["MMTP"]
     mmtp_new = {"Version":2, 
-                "ConfigRegisters":[],
+                #  "ConfigRegisters":[],
                 "SkipRegisters":[],
-                "OpcNodeId" : mmtp_ori["OpcNodeId"],
-                "OpcServerIp" : mmtp_ori["OpcServerIp"],
+                #  "OpcNodeId" : mmtp_ori["OpcNodeId"],
+                #  "OpcServerIp" : mmtp_ori["OpcServerIp"],
                 }
+
+    # keep all the old registers
+    #  mmtp_new.update(mmtp_ori)
 
 
 
@@ -32,12 +35,20 @@ with open("OldNewRegMap.csv") as f:
         jname, bname, rname = r["Json Name"], r["Bus Name"], r["Register Name"]
         default = r["c++ Code/Default Value"]
         print(jname, bname, rname)
-        mmtp_new["ConfigRegisters"].append(f"\"{bname}.{rname}\"")
+        # special case that doesn't need to be in the list
+        #  if rname not in ["chanHitRateEna"]:
+            #  mmtp_new["ConfigRegisters"].append(f"\"{bname}.{rname}\"")
+
         if bname not in mmtp_new:
             mmtp_new[bname] = {}
 
         if jname != "" and jname in mmtp_ori:
-            mmtp_new[bname][rname] = int(mmtp_ori[jname])
+            if mmtp_ori[jname] == "true":
+                mmtp_new[bname][rname] = 1
+            elif mmtp_ori[jname] == "false":
+                mmtp_new[bname][rname] = 0
+            else:
+                mmtp_new[bname][rname] = int(mmtp_ori[jname])
         else:
             mmtp_new[bname][rname] = int(default)
         pass

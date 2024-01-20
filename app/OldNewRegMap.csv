@@ -16,7 +16,7 @@ EnableChannelRates,,,mmtp_chanRateDet,chanHitRateEna,rw,T
 ,,,mmtp_ttc,ecrCnt,r,
 ,,,mmtp_ttc,l1aCnt,r,
 SelfTriggerDelay,,,mmtp_ttc,algoL1aLat,rw,T
-,REG_ADDC_EMU_DISABLE,1,mmtp_ttc,control,rw,T
+,REG_ADDC_EMU_DISABLE,0,mmtp_ttc,control,rw,T
 ,,,mmtp_horxEnviromentMonitor,horxEnvMonAddr,rw,
 ,,,mmtp_horxEnviromentMonitor,horxEnvMonData,r,
 ,,,mmtp_artAnalysisAutomask,offsetModeBcid,r,
@@ -25,10 +25,10 @@ SelfTriggerDelay,,,mmtp_ttc,algoL1aLat,rw,T
 ,,,mmtp_artAnalysisAutomask,bxLsbReg_1,r,
 ,,,mmtp_artAnalysisAutomask,bxLsbReg_2,r,
 ,,,mmtp_artAnalysisAutomask,bxLsbReg_3,r,
-,,,mmtp_artAnalysisAutomask,gbtAlign,r,
+,REG_FIBER_ALIGNMENT,,mmtp_artAnalysisAutomask,gbtAlign,r,
 ,,,mmtp_artAnalysisAutomask,gbtBcidOk,r,
 ,,,mmtp_artAnalysisAutomask,vmmAutoMask,r,
-,,,mmtp_artAnalysisAutomask,vmmAutoMaskSel,rw,
+,,0,mmtp_artAnalysisAutomask,vmmAutoMaskSel,rw,T
 VmmMaskDrainPeriod,,,mmtp_artAnalysisAutomask,vmmMaskDrainPeriod,rw,T
 VmmMaskHotThresh,,,mmtp_artAnalysisAutomask,vmmMaskHotThresh,rw,T
 VmmMaskHotThreshHyst,,,mmtp_artAnalysisAutomask,vmmMaskHotThreshHyst,rw,T
@@ -45,4 +45,4 @@ gloSyncIdleState,,,mmtp_globalSync,gloSyncIdleState,rw,T
 LocalBcidOffset,,,mmtp_globalSync,localBcidOffset,rw,T
 latTxBcidOffset,,,mmtp_globalSync,latTxBcidOffset,rw,T
 ,REG_LAT_TX_IDLE_STATE,,mmtp_globalSync,latTxIdleState,rw,F
-,,,mmtp_clocksResets,rstGbtPll,rw,
+,REG_FIBER_QPLL_RESET,,mmtp_clocksResets,rstGbtPll,rw,
